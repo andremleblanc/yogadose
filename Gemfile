@@ -10,6 +10,7 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
+gem 'high_voltage', '~> 3.0.0'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do

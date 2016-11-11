@@ -3,3 +3,5 @@ en:
     application:
       all_workouts: All Workouts
       programming: Programming
+    frontend:
+      login: Login

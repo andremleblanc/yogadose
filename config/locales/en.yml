@@ -5,3 +5,4 @@ en:
       programming: Programming
     frontend:
       login: Login
+      logout: Logout

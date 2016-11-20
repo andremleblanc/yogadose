@@ -1,7 +1,8 @@
 class User < ApplicationRecord
+  validates :name, presence: true
   devise :database_authenticatable, :lockable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         omniauth_providers: [:facebook, :google]
+         omniauth_providers: [:facebook, :google_oauth2]
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

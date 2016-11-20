@@ -1,4 +1,7 @@
 en:
+  flash:
+    facebook_error: Oops! Login with Facebook was unsuccessful.
+    google_error: Oops! Login with Google was unsuccessful.
   layouts:
     application:
       all_workouts: All Workouts

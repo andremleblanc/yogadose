@@ -53,9 +53,9 @@
   <div class="col-md-6 col-sm-4 clearfix hidden-xs">
     <ul class="list-inline links-list pull-right">
       <li>
-        <a href="extra-login.html">
-          Log Out <i class="fa fa-sign-out right"></i>
-        </a>
+        <%= link_to destroy_user_session_path, method: :delete do %>
+            Log Out <i class="fa fa-sign-out right"></i>
+        <% end %>
       </li>
     </ul>
   </div>

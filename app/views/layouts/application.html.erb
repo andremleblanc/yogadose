@@ -80,6 +80,7 @@
         <% if current_user %>
           <%= render partial: 'layouts/user_menu' %>
         <% end %>
+        <% if flash[:error] %><div class="alert alert-danger"><%= flash[:error] %></div><% end %>
         <% if alert %><div class="alert alert-warning"><%= alert %></div><% end %>
         <% if notice %><div class="alert alert-success"><%= notice %></div><% end %>
         <%= yield %>

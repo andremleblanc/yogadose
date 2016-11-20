@@ -1,13 +1,26 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
     @user = User.from_omniauth(request.env['omniauth.auth'])
-
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication
       set_flash_message(:notice, :success, :kind => 'Facebook') if is_navigational_format?
     else
-      #TODO: Should be alerted to persistance error
-      session['devise.facebook_data'] = request.env['omniauth.auth']
+      #TODO: Metric / Log
+      flash[:error] = I18n.t('flash.facebook_error')
+      # session['devise.facebook_data'] = request.env['omniauth.auth']
+      redirect_to new_user_registration_url
+    end
+  end
+
+  def google_oauth2
+    @user = User.from_omniauth(request.env['omniauth.auth'])
+    if @user.persisted?
+      sign_in_and_redirect @user, :event => :authentication
+      set_flash_message(:notice, :success, :kind => 'Google') if is_navigational_format?
+    else
+      #TODO: Metric / Log
+      flash[:error] = I18n.t('flash.google_error')
+      # session['devise.google_data'] = request.env['omniauth.auth']
       redirect_to new_user_registration_url
     end
   end

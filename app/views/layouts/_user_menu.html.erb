@@ -8,7 +8,9 @@
       <li class="profile-info dropdown">
 
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <%= image_tag current_user.image, alt: 'User Profile Image', class: 'img-circle', width: '44' %>
+          <% if current_user.image %> <%# TODO: presenter %>
+            <%= image_tag current_user.image, alt: 'User Profile Image', class: 'img-circle', width: '44' %>
+          <% end %>
           <%= current_user.name %>
         </a>
 

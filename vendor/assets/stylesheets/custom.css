@@ -1,9 +1,10 @@
-/**
- *
- * Apply Here your Custom CSS
- *
-*/
+.login-page .login-form .form-group .facebook-button,
+.login-page .login-form .form-group .twitter-button,
+.login-page .login-form .form-group .google-button {
+  color: #FFF !important;
+}
 
-body {
-	
+.btn-login i {
+  position: relative;
+  top: 2px;
 }

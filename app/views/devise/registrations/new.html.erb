@@ -1,29 +1,78 @@
-<h2>Sign up</h2>
+<%= neon_error_messages! %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'neon-form'}) do |f| %>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-user"></i>
+        </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+        <%= f.text_field :name,
+                          autofocus: true,
+                          class: 'form-control',
+                          placeholder: 'Name',
+                          required: ''
+        %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-envelope"></i>
+        </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
+        <%= f.email_field :email,
+                          autofocus: true,
+                          class: 'form-control',
+                          placeholder: 'Email',
+                          required: ''
+        %>
+      </div>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-key"></i>
+        </div>
+
+        <%= f.password_field :password,
+                             autocomplete: 'off',
+                             class: 'form-control',
+                             pattern: ".{#{@minimum_password_length},}",
+                             placeholder: 'Password',
+                             required: '',
+                             title: "#{@minimum_password_length} characters minimum"
+        %>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-key"></i>
+        </div>
+
+        <%= f.password_field :password_confirmation,
+                             autocomplete: 'off',
+                             class: 'form-control',
+                             pattern: '.{3,}',
+                             placeholder: 'Password Again',
+                             required: '',
+                             title: '8 characters minimum'
+        %>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= button_tag class: 'btn btn-primary btn-block btn-login' do %>
+          <i class="fa fa-rocket"></i>
+          Sign Up
+      <% end %>
+    </div>
 <% end %>
 
 <%= render "devise/shared/links" %>

@@ -8,3 +8,8 @@
   position: relative;
   top: 2px;
 }
+
+.form-login-error {
+  display: block !important;
+  height: auto;
+}

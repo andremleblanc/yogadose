@@ -1,34 +1,16 @@
-<script type="application/javascript">
-  <%# TODO: Make this a general class %>
-  $(document).ready( function() {
-    var $loginForm = $('#new_user');
-
-    $loginForm.find('.form-control').each(function(i, el)
-    {
-      var $this = $(el), $group = $this.closest('.input-group');
-
-      $this.prev('.input-group-addon').click(function()
-      { $this.focus(); });
-
-      $this.on({
-        focus: function()
-        { $group.addClass('focused'); },
-
-        blur: function()
-        { $group.removeClass('focused'); }
-      });
-    });
-  })
-</script>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'neon-form' }) do |f| %>
   <div class="form-group">
     <div class="input-group">
       <div class="input-group-addon">
         <i class="fa fa-user"></i>
       </div>
 
-      <%= f.email_field :email, autofocus: true, class: 'form-control', placeholder: 'Email' %>
+      <%= f.email_field :email,
+                        autofocus: true,
+                        class: 'form-control',
+                        placeholder: 'Email',
+                        required: ''
+      %>
     </div>
   </div>
 
@@ -38,7 +20,14 @@
         <i class="fa fa-key"></i>
       </div>
 
-      <%= f.email_field :password, autofocus: true, class: 'form-control', placeholder: 'Password' %>
+      <%= f.password_field :password,
+                           autofocus: true,
+                           class: 'form-control',
+                           pattern: ".{#{@minimum_password_length},}",
+                           placeholder: 'Password',
+                           required: '',
+                           title: "#{@minimum_password_length} characters minimum"
+      %>
     </div>
   </div>
 

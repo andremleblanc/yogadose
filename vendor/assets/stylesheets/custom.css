@@ -13,3 +13,7 @@
   display: block !important;
   height: auto;
 }
+
+.login-content h3 {
+  color: #FFF;
+}

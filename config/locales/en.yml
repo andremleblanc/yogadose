@@ -6,6 +6,7 @@ en:
     application:
       all_workouts: All Workouts
       programming: Programming
+      users: Users
   pages:
     home:
       login: Login

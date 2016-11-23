@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Signing up', type: :feature, js: true do
+RSpec.feature 'Registration', type: :feature do
   let(:email) { Faker::Internet.email }
   let(:name) { Faker::Name.name }
   let(:password) { Faker::Internet.password(8) }

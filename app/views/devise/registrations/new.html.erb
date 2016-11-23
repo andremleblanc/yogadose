@@ -12,7 +12,7 @@
         <%= f.text_field :name,
                           autofocus: true,
                           class: 'form-control',
-                          placeholder: 'Name',
+                          placeholder: t('.name'),
                           required: ''
         %>
       </div>
@@ -26,7 +26,7 @@
 
         <%= f.email_field :email,
                           class: 'form-control',
-                          placeholder: 'Email',
+                          placeholder: t('.email'),
                           required: ''
         %>
       </div>
@@ -42,7 +42,7 @@
                              autocomplete: 'off',
                              class: 'form-control',
                              pattern: ".{#{@minimum_password_length},}",
-                             placeholder: 'Password',
+                             placeholder: t('.password'),
                              required: '',
                              title: "#{@minimum_password_length} characters minimum"
         %>
@@ -60,7 +60,7 @@
                              autocomplete: 'off',
                              class: 'form-control',
                              pattern: '.{3,}',
-                             placeholder: 'Password Again',
+                             placeholder: t('.password_confirmation'),
                              required: '',
                              title: '8 characters minimum'
         %>

@@ -6,6 +6,8 @@ en:
     application:
       all_workouts: All Workouts
       programming: Programming
-    frontend:
+  pages:
+    home:
       login: Login
       logout: Logout
+      sign_up: Sign Up

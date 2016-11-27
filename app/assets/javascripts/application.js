@@ -21,5 +21,7 @@
 //= require joinable
 //= require resizeable
 //= require neon-api
-
 //= require neon-custom
+//= require datatables
+//= require select2
+//= require tables

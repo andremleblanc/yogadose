@@ -12,14 +12,20 @@ RSpec.describe UsersController, type: :controller do
     end
 
     context 'authenticated' do
-      before do
-        @user = create(:user)
-        sign_in(@user)
-        get :index
+      context 'authorized' do
+        before do
+          @user = create(:user)
+          sign_in(@user)
+          get :index
+        end
+
+        it { expect(response).to render_template(:index) }
+        it { expect(assigns(:users)).to eq([@user]) }
       end
 
-      it { expect(response).to render_template(:index) }
-      it { expect(assigns(:users)).to eq([@user]) }
+      context 'unauthorized' do
+        pending 'displays 404'
+      end
     end
   end
 end

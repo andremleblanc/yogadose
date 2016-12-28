@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   def index
-    puts "User: #{User.all}"
-    @users = User.all
+    if UserPolicy.new(current_user, User).index?
+      @users = policy_scope(User)
+    else
+      redirect_to dashboard_path
+    end
   end
 end

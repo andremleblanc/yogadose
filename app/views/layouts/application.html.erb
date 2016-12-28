@@ -76,12 +76,14 @@
             <span class="badge badge-secondary">8</span>
         <% end %>
       </li>
-      <li>
-        <%= link_to users_path do %>
-            <i class="fa fa-users"></i>
-            <span><%= t('.users') %></span>
-        <% end %>
-      </li>
+      <% if current_user.admin? %>
+        <li>
+          <%= link_to users_path do %>
+              <i class="fa fa-users"></i>
+              <span><%= t('.users') %></span>
+          <% end %>
+        </li>
+      <% end %>
     </ul>
   </div>
 

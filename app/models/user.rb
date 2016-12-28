@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  before_validation :default_values
+  validates :admin, inclusion: { in: [true, false] }
   validates :name, presence: true
   devise :database_authenticatable, :lockable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -11,5 +13,15 @@ class User < ApplicationRecord
       user.name = auth.info.name
       user.image = auth.info.image
     end
+  end
+
+  def active?
+    true
+  end
+
+  private
+
+  def default_values
+    self.admin = false if self.admin.nil?
   end
 end

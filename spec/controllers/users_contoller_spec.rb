@@ -4,7 +4,7 @@ RSpec.describe UsersController, type: :controller do
   context '#index' do
     context 'unauthenticated' do
       before do
-        @user = create(:user)
+        @user = create(:subscriber)
         get :index
       end
 
@@ -14,7 +14,7 @@ RSpec.describe UsersController, type: :controller do
     context 'authenticated' do
       context 'authorized' do
         before do
-          @user = create(:user)
+          @user = create(:admin)
           sign_in(@user)
           get :index
         end
@@ -24,7 +24,13 @@ RSpec.describe UsersController, type: :controller do
       end
 
       context 'unauthorized' do
-        pending 'displays 404'
+        before do
+          @user = create(:subscriber)
+          sign_in(@user)
+          get :index
+        end
+
+        it { expect(response).to redirect_to dashboard_path }
       end
     end
   end

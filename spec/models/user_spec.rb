@@ -6,6 +6,11 @@ RSpec.describe User, type: :model do
       subscriber = create(:subscriber)
       expect(subscriber.create_subscription(attributes_for :subscription)).to be_a Subscription
     end
+
+    it 'has one payment_method' do
+      subscriber = create(:subscriber)
+      expect(subscriber.create_payment_method(attributes_for :payment_method)).to be_a PaymentMethod
+    end
   end
 
   describe 'default values' do

@@ -2,6 +2,9 @@ en:
   flash:
     facebook_error: Oops! Login with Facebook was unsuccessful.
     google_error: Oops! Login with Google was unsuccessful.
+    subscription_already_exists: Subscription already exists.
+    subscription_error: Subscription not created.
+    subscription_success: Subscription created successfully.
   layouts:
     application:
       all_workouts: All Workouts
@@ -12,3 +15,10 @@ en:
       login: Login
       logout: Logout
       sign_up: Sign Up
+  subscriptions:
+    new:
+      card_number: Card Number
+      cvc: CVC
+      expiration: Expiration
+      subscribe: Subscribe Now
+      zipcode: Zipcode

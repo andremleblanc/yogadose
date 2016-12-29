@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_one :subscription
   before_validation :default_values
   validates :admin, inclusion: { in: [true, false] }
   validates :name, presence: true

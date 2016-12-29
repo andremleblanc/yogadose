@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe 'associations' do
+    it 'has one subscription' do
+      subscriber = create(:subscriber)
+      expect(subscriber.create_subscription(attributes_for :subscription)).to be_a Subscription
+    end
+  end
+
   describe 'default values' do
     context 'admin' do
       context 'when nil' do

@@ -16,5 +16,17 @@ RSpec.describe Subscription, type: :model do
         expect(subscription.valid?).to be false
       end
     end
+
+    context 'user' do
+      before do
+        @subscriber = create(:subscriber)
+        create(:subscription, user: @subscriber)
+      end
+
+      it 'is unique' do
+        expect(@subscriber.subscription).to be_a Subscription
+        expect(build(:subscription, user: @subscriber)).not_to be_valid
+      end
+    end
   end
 end

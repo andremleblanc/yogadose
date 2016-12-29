@@ -116,7 +116,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
   context 'GET edit' do
     context 'when unauthenticated' do
-
+      pending
     end
 
     context 'when authenticated' do

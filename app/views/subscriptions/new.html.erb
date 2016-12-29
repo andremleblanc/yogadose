@@ -59,7 +59,7 @@
       $form.find('.submit').prop('disabled', false);
     } else {
       var token = response.id;
-      $form.append($('<input type="hidden" name="subscription[token]">').val(token));
+      $form.append($('<input type="hidden" name="token">').val(token));
       $form.get(0).submit();
     }
   }

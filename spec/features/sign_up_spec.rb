@@ -28,5 +28,6 @@ RSpec.feature 'Registration', type: :feature, js: true do
     click_on I18n.t('subscriptions.new.subscribe')
 
     expect(page).to have_current_path(account_path)
+    expect(User.find_by(email: email).payment_method).to be
   end
 end

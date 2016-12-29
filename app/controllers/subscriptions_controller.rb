@@ -4,7 +4,8 @@ class SubscriptionsController < ApplicationController
 
   def create
     if current_user.subscription.blank?
-      if current_user.create_subscription(subscription_params).valid?
+      if stripe_token.present? && current_user.create_subscription
+        current_user.create_payment_method!(token: stripe_token)
         flash[:success] = I18n.t('flash.subscription_success')
         redirect_to account_path
       else
@@ -22,7 +23,11 @@ class SubscriptionsController < ApplicationController
 
   private
 
+  def stripe_token
+    params[:token]
+  end
+
   def subscription_params
-    params.require(:subscription).permit(:token)
+    params.require(:subscription).permit()
   end
 end

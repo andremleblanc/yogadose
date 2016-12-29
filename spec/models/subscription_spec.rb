@@ -10,13 +10,6 @@ RSpec.describe Subscription, type: :model do
   end
 
   describe 'validations' do
-    context 'token' do
-      it 'is required' do
-        subscription = build(:subscription, token: '')
-        expect(subscription.valid?).to be false
-      end
-    end
-
     context 'user' do
       before do
         @subscriber = create(:subscriber)

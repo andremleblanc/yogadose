@@ -16,8 +16,10 @@ ActiveRecord::Schema.define(version: 20161229002028) do
   enable_extension "plpgsql"
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer "user_id"
-    t.string  "token"
+    t.integer  "user_id"
+    t.string   "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
   end
 

@@ -29,4 +29,11 @@ RSpec.describe Subscription, type: :model do
       end
     end
   end
+
+  describe '#trial_expiry' do
+    it 'is set to end of day 7 days from created_at' do
+      subscription = create(:subscription)
+      expect(subscription.trial_expiry).to eq subscription.created_at.advance(days: 7).end_of_day
+    end
+  end
 end

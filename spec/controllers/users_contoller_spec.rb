@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-  context '#index' do
+  context 'GET index' do
     context 'unauthenticated' do
       before do
         @user = create(:subscriber)

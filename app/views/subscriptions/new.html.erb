@@ -42,7 +42,6 @@
   Stripe.setPublishableKey('<%= Rails.application.secrets.stripe_key %>');
 
   $(function() {
-    console.log("HERE");
     var $form = $('#payment-form');
     $form.submit(function(event) {
       $form.find('.submit').prop('disabled', true);

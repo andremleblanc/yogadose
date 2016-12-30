@@ -23,12 +23,12 @@ RSpec.describe SubscriptionsController, type: :controller do
 
       context 'and subscription' do
         before do
-          user = create(:subscriber)
-          sign_in(user)
+          subscriber = create(:subscriber)
+          sign_in(subscriber)
           get :new
         end
 
-        xit { expect(response).to redirect_to(:edit) }
+        it { expect(response).to render_template(:edit) }
       end
     end
   end
@@ -122,17 +122,32 @@ RSpec.describe SubscriptionsController, type: :controller do
   end
 
   context 'GET edit' do
+    let(:subscription) { create(:subscription) }
+
     context 'when unauthenticated' do
-      pending
+      it 'redirects to login' do
+        get :edit, params: { id: subscription.id }
+        expect(response).to redirect_to(new_user_session_path)
+      end
     end
 
     context 'when authenticated' do
-      context 'and authorized' do
-        pending
+      let(:user) { create(:subscriber) }
+
+      before do
+        sign_in(user)
+        get :edit, params: { id: subscription.id }
       end
 
       context 'and unauthorized' do
-        pending
+        let(:different_user) { create(:subscriber) }
+        let(:subscription) { different_user.subscription }
+        it { expect(response).to redirect_to(root_path) }
+      end
+
+      context 'and authorized' do
+        let(:subscription) { user.subscription }
+        it { expect(response).to render_template(:edit) }
       end
     end
   end

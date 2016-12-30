@@ -1,9 +1,14 @@
 class UsersController < ApplicationController
   def index
-    if UserPolicy.new(current_user, User).index?
-      @users = policy_scope(User)
-    else
-      redirect_to dashboard_path
-    end
+    authorize(User)
+    @users = policy_scope(User)
+  end
+
+  private
+
+  def user_not_authorized
+    #TODO: Track this
+    flash[:alert] = 'You are not authorized to perform this action.'
+    redirect_to(request.referrer || dashboard_path)
   end
 end

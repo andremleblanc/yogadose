@@ -17,6 +17,11 @@ FactoryGirl.define do
       admin false
       after(:build) { |subscriber| subscriber.subscription = FactoryGirl.build(:subscription, user: subscriber) }
       after(:create) { |subscriber| subscriber.subscription.save! }
+
+      trait :with_payment_method do
+        after(:build) { |subscriber| subscriber.payment_method = FactoryGirl.build(:payment_method, user: subscriber) }
+        after(:create) { |subscriber| subscriber.payment_method.save! }
+      end
     end
   end
 end

@@ -75,21 +75,25 @@ RSpec.describe SubscriptionsController, type: :controller do
           end
         end
 
-        xcontext 'and subscription is not valid' do
+        context 'and subscription is not valid' do
+          before do
+            expect(subject).to receive(:create_subscription).and_return(false)
+          end
+
           it 'does not create the subscription' do
-            expect(@user.subscription).to be nil
-            expect { post :create, params: invalid_params }.not_to change { Subscription.count }
-            @user.reload
-            expect(@user.subscription).to be nil
+            expect(user.subscription).to be nil
+            expect { post :create, params: params }.not_to change { Subscription.count }
+            user.reload
+            expect(user.subscription).to be nil
           end
 
           it 'renders new' do
-            post :create, params: invalid_params
+            post :create, params: params
             expect(response).to render_template(:new)
           end
 
           it 'has the correct flash message' do
-            post :create, params: invalid_params
+            post :create, params: params
             expect(flash[:error]).to match I18n.t('flash.subscription_error')
           end
         end

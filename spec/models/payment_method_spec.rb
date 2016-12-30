@@ -10,9 +10,9 @@ RSpec.describe PaymentMethod, type: :model do
   end
 
   describe 'validations' do
-    context 'token' do
+    context 'stripe_token' do
       it 'is required' do
-        payment_method = build(:payment_method, token: nil)
+        payment_method = build(:payment_method, stripe_token: nil)
         expect(payment_method).not_to be_valid
       end
     end

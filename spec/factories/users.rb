@@ -15,6 +15,8 @@ FactoryGirl.define do
 
     factory :subscriber do
       admin false
+      after(:build) { |subscriber| subscriber.subscription = FactoryGirl.build(:subscription, user: subscriber) }
+      after(:create) { |subscriber| subscriber.subscription.save! }
     end
   end
 end

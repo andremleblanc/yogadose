@@ -17,6 +17,8 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'pundit'
+gem 'sidekiq'
+gem 'stripe'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
@@ -38,4 +40,6 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'selenium-webdriver', '~> 2.0'
+  gem 'vcr'
+  gem 'webmock'
 end

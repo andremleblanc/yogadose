@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe 'associations' do
     it 'has one subscription' do
-      subscriber = create(:subscriber)
+      subscriber = create(:user)
       expect(subscriber.create_subscription(attributes_for :subscription)).to be_a Subscription
     end
 

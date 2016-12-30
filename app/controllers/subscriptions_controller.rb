@@ -5,7 +5,7 @@ class SubscriptionsController < ApplicationController
   def create
     if current_user.subscription.blank?
       if stripe_token.present? && current_user.create_subscription
-        current_user.create_payment_method!(token: stripe_token)
+        SubscriptionWorker.perform_async(current_user.id, stripe_token)
         flash[:success] = I18n.t('flash.subscription_success')
         redirect_to account_path
       else

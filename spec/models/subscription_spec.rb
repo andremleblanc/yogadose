@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Subscription, type: :model do
   describe 'associations' do
     it 'belongs to a user' do
-      subscriber = create(:subscriber)
+      subscriber = create(:user)
       subscription = create(:subscription, user: subscriber)
       expect(subscription.user).to be subscriber
     end
@@ -13,7 +13,6 @@ RSpec.describe Subscription, type: :model do
     context 'user' do
       before do
         @subscriber = create(:subscriber)
-        create(:subscription, user: @subscriber)
       end
 
       it 'is unique' do

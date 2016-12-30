@@ -34,10 +34,6 @@ RSpec.describe SubscriptionsController, type: :controller do
   end
 
   context 'POST create' do
-    before do
-      allow(user).to receive(:create_payment_method!)
-    end
-
     let(:user) { create(:user) }
 
     context 'when unauthenticated' do
@@ -73,6 +69,10 @@ RSpec.describe SubscriptionsController, type: :controller do
             post :create, params: params
             expect(flash[:success]).to match I18n.t('flash.subscription_success')
           end
+
+          it 'schedules a job' do
+            expect { post :create, params: params }.to change{ SubscriptionWorker.jobs.size }.by(1)
+          end
         end
 
         xcontext 'and subscription is not valid' do
@@ -98,11 +98,9 @@ RSpec.describe SubscriptionsController, type: :controller do
       context 'and subscription' do
         before do
           sign_in(user)
-          user.create_subscription(attributes_for(:subscription))
         end
 
         let(:user) { create(:subscriber) }
-
         let(:params) {{ subscription: subscription_params }}
         let(:subscription_params) {{ token: Faker::Lorem.characters(20) }}
 

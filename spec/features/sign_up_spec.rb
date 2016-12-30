@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.feature 'Registration', type: :feature, js: true do
+  before do
+    Sidekiq::Testing.inline!
+  end
+
+  after do
+    Sidekiq::Testing.fake!
+  end
+
   let(:email) { Faker::Internet.email }
   let(:name) { Faker::Name.name }
   let(:password) { Faker::Internet.password(8) }

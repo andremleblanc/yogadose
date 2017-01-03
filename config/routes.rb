@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
+  resources :routines
   resources :subscriptions, only: %i(new create edit)
   resources :users, only: :index
 end

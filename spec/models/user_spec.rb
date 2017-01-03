@@ -11,6 +11,13 @@ RSpec.describe User, type: :model do
       subscriber = create(:subscriber)
       expect(subscriber.create_payment_method(attributes_for :payment_method)).to be_a PaymentMethod
     end
+
+    xit 'destroying a user keep subscription' do
+      pending
+      #subscriber
+      #subscriber.destory
+      #user.create(subscriber.email).subscription == subscriber.subscription
+    end
   end
 
   describe 'default values' do

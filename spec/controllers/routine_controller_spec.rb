@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe RoutinesController, type: :controller do
   let!(:routine) { create(:routine) }
-  
+
   describe 'GET index' do
     context 'when unauthenticated' do
-      it 'redirects to login' do
+      it 'renders index' do
         get :index
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to render(:index)
       end
     end
 

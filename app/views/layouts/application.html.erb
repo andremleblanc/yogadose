@@ -1,36 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="description" content="Yogadose Dashboard"/>
-    <meta name="author" content="BlancOPS LLC"/>
-
-    <title>Yogadose | Dashboard</title>
-
-    <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
-    <script src="https://use.fontawesome.com/187d51a807.js"></script>
+    <%= render partial: 'layouts/meta' %>
+    <title>Yogadose // Dashboard</title>
+    <%= render partial: 'layouts/includes' %>
   </head>
 
   <body>
     <div class="main-content">
-      <% if current_user %>
-          <%= render partial: 'layouts/user_menu' %>
-      <% end %>
-      <% if flash[:error] %>
-          <div class="alert alert-danger"><%= flash[:error] %></div>
-      <% end %>
-      <% if alert %>
-          <div class="alert alert-warning"><%= alert %></div>
-      <% end %>
-      <% if notice %>
-          <div class="alert alert-success"><%= notice %></div>
-      <% end %>
+      <%= render partial: 'layouts/header' %>
+      <%= render partial: 'layouts/alerts' %>
       <%= yield %>
     </div>
   </body>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render partial: 'layouts/meta' %>
+  <title>Yogadose // Login</title>
+  <%= render partial: 'layouts/includes' %>
+</head>
+
+<body>
+<div class="main-content">
+  <%= render partial: 'layouts/header' %>
+  <%= render partial: 'layouts/alerts' %>
+  <div class="centered-form">
+    <%= yield %>
+  </div>
+</div>
+</body>
+</html>

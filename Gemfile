@@ -10,7 +10,6 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
-gem 'high_voltage', '~> 3.0.0' # TODO: Remove this dependency
 
 gem 'devise'
 gem 'omniauth'

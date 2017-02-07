@@ -92,7 +92,6 @@ GEM
       activesupport (>= 4.1.0)
     hashdiff (0.3.2)
     hashie (3.4.6)
-    high_voltage (3.0.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
@@ -286,7 +285,6 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faker
-  high_voltage (~> 3.0.0)
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)

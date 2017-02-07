@@ -6,9 +6,6 @@ Rails.application.routes.draw do
   get 'account', to: 'dashboard#show', as: :account
   get 'dashboard', to: 'dashboard#show', as: :dashboard
 
-  # Static Pages Routes
-  get "/pages/*id" => 'pages#show', as: :page, format: false
-
   devise_for :users, :controllers => {
       registrations: 'users/registrations',
       omniauth_callbacks: 'users/omniauth_callbacks'
@@ -20,5 +17,5 @@ Rails.application.routes.draw do
   end
 
   # Unauthenticated Root
-  root to: 'pages#show', id: 'home'
+  root to: redirect('/temp.html')
 end

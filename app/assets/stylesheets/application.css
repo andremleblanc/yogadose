@@ -12,25 +12,4 @@
  *
  *= require_tree .
  *= require_self
-
- *= require 'jquery-ui-1.10.3.custom'
- *= require 'bootstrap'
- *= require 'neon-core'
- *= require 'neon-theme'
- *= require 'neon-forms'
- *= require 'custom'
- *= require 'datatables'
- *= require 'select2-bootstrap'
- *= require 'select2'
  */
-
-@font-face {
-  font-family: 'Entypo';
-  src:url('entypo.eot');
-  src:url('entypo.eot?#iefix') format('embedded-opentype'),
-  url('entypo.svg#entypo') format('svg'),
-  url('entypo.woff') format('woff'),
-  url('entypo.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}

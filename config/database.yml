@@ -2,16 +2,12 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: postgres
-  host: db
   port: 5432
 
 development:
   <<: *default
   database: yogadose_development
-  # password:
-  #schema_search_path: myapp,sharedapp,public
-  #min_messages: notice
+  password:
 
 test:
   <<: *default

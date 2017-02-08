@@ -40,6 +40,6 @@ RSpec.feature 'Registration', type: :feature, js: true do
   end
 
   xit 'Sign up with facebook' do
-    
+
   end
 end

@@ -2,11 +2,51 @@
 
 $darkgray: #1C1C1C;
 
+
 header {
   background-color: $darkgray;
+
+  nav {
+    .navbar-brand {
+      height: 40px;
+      margin: 10px 0;
+      padding: 0px;
+
+      img { max-height: 40px; }
+    }
+
+    .navbar-nav {
+      > li, > li.open {
+        > a {
+          background-color: transparent;
+          color: gray;
+          padding: 20px 15px;
+
+          &:hover, &:focus {
+            background-color: transparent;
+            color: white;
+          }
+        }
+
+        .dropdown-menu { background-color: white }
+      }
+    }
+
+    .navbar-toggle {
+      background-color: gray;
+      border-color: white;
+      margin: 13px 15px;
+
+      &.collapsed { background-color: transparent; };
+
+      &:hover.collapsed { background-color: gray; }
+
+      .icon-bar { background-color: white; }
+    }
+  }
 }
 
-.centered-form {
-  width: 33%;
-  margin: 0 auto;
-}
+//.centered-form {
+//  width: 33%;
+//  margin: 0 auto;
+//}

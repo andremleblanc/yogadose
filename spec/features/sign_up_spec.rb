@@ -13,7 +13,7 @@ RSpec.feature 'Registration', type: :feature, js: true do
   let(:name) { Faker::Name.name }
   let(:password) { Faker::Internet.password(8) }
 
-  scenario 'Sign up' do
+  xit 'Sign up with email' do
     visit root_path
     click_on I18n.t('pages.home.sign_up')
     expect(page).to have_current_path(new_user_registration_path)
@@ -37,5 +37,9 @@ RSpec.feature 'Registration', type: :feature, js: true do
 
     expect(page).to have_current_path(account_path)
     expect(User.find_by(email: email).payment_method).to be
+  end
+
+  xit 'Sign up with facebook' do
+    
   end
 end

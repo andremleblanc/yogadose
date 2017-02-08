@@ -1,7 +1,8 @@
 @import "bootstrap";
 
 $darkgray: #1C1C1C;
-
+$primary: #3598A6;
+$primary-dark: darken($primary, 10%);
 
 header {
   background-color: $darkgray;
@@ -43,6 +44,25 @@ header {
 
       .icon-bar { background-color: white; }
     }
+  }
+}
+
+.btn-primary {
+  background-color: $primary;
+  border: none;
+
+  &:hover, &:focus {
+    background-color: $primary-dark;
+  }
+}
+
+.facebook-button {
+  background-color: #3b5998;
+  color: white;
+
+  &:active, &:focus, &:hover {
+    background-color: darken(#3b5998, 10%);
+    color: white;
   }
 }
 

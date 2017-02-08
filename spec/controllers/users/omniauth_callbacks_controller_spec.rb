@@ -41,7 +41,7 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
     end
   end
 
-  describe '#google' do
+  xit '#google' do
     context 'user persisted' do
       before do
         user = build(:user)

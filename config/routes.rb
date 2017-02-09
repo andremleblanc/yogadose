@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   resources :routines
   resources :subscriptions, only: %i(new create edit)
-  resources :users, only: :index
+  resources :users, only: [ :index, :edit ]
 
-  get 'account', to: 'dashboard#show', as: :account
+  get 'account', to: 'users#edit', as: :account
   get 'dashboard', to: 'dashboard#show', as: :dashboard
 
   devise_for :users, :controllers => {

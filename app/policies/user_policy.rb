@@ -3,6 +3,10 @@ class UserPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def update?
+    user.admin? || user == record
+  end
+
   def scope
     Pundit.policy_scope!(user, record.class)
   end

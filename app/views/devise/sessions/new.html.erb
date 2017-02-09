@@ -4,7 +4,7 @@
   <div class="form-group">
     <%= link_to omniauth_authorize_path(resource_name, :facebook), class: 'btn btn-default btn-md btn-block facebook-button' do %>
         <i class="fa fa-facebook"></i>
-        Sign in with Facebook
+        <%= t('.facebook_authentication') %>
     <% end %>
   </div>
 
@@ -47,7 +47,7 @@
   <div class="form-group">
     <%= button_tag class: 'btn btn-primary btn-block btn-login' do %>
         <i class="fa fa-sign-in"></i>
-        Login
+        <%= t('.login') %>
     <% end %>
   </div>
 

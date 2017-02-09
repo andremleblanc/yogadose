@@ -4,6 +4,11 @@ class UsersController < ApplicationController
     @users = policy_scope(User)
   end
 
+  def edit
+    @user = User.find_by(id: params[:id]) || current_user
+    authorize @user
+  end
+
   private
 
   def user_not_authorized

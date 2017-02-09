@@ -1,12 +1,17 @@
 @import "bootstrap";
 
 $darkgray: #1C1C1C;
+$gray: gray;
+$lightgray: #D8DDE1;
 $primary: #3598A6;
 $primary-dark: darken($primary, 10%);
 
 body {
+  background-color: $lightgray;
   font-family: "Roboto", sans-serif;
 }
+
+h2 { font-weight: 300 }
 
 header {
   background-color: $darkgray;
@@ -51,6 +56,27 @@ header {
   }
 }
 
+.account {
+  section {
+    .box {
+      background-color: white;
+      box-shadow: 0px 2px 4px rgba(0, 2, 4, 0.4);
+      margin-bottom: 50px;
+      padding: 25px 30px;
+
+      .date, .price {
+        font-size: 20px;
+        font-weight: 300;
+      }
+
+      .price {
+        color: $primary;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
 .btn { border: none; }
 
 .btn-primary {
@@ -70,8 +96,3 @@ header {
     color: white;
   }
 }
-
-//.centered-form {
-//  width: 33%;
-//  margin: 0 auto;
-//}

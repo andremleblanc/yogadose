@@ -1,8 +1,13 @@
 require 'rails_helper'
 
-RSpec.feature 'Registration', type: :feature, js: true do
+RSpec.feature 'Authentication', type: :feature, js: true do
   before do
     Sidekiq::Testing.inline!
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.add_mock(:facebook, {
+        uid: '12345',
+        info: { email: email, name: name }
+    })
   end
 
   after do
@@ -13,7 +18,7 @@ RSpec.feature 'Registration', type: :feature, js: true do
   let(:name) { Faker::Name.name }
   let(:password) { Faker::Internet.password(8) }
 
-  xit 'Sign up with email' do
+  xit 'Sign up with email, connect facebook, signout, login with facebook' do
     visit root_path
     click_on I18n.t('pages.home.sign_up')
     expect(page).to have_current_path(new_user_registration_path)
@@ -39,7 +44,27 @@ RSpec.feature 'Registration', type: :feature, js: true do
     expect(User.find_by(email: email).payment_method).to be
   end
 
-  xit 'Sign up with facebook' do
+  it 'Sign up with facebook, setup credentials, logout, login with credentials' do
+    # Sign Up and Login
+    visit new_user_session_path
+    click_on I18n.t('devise.sessions.new.facebook_authentication')
+    expect(page).to have_current_path(dashboard_path)
 
+    # Set Password
+    click_on name
+    click_on I18n.t('account_settings')
+    expect(page).to have_current_path(account_path)
+
+    # Logout
+    click_on name
+    click_on I18n.t('logout')
+    expect(page).to have_current_path('/temp.html')
+
+    # Login
+    visit new_user_session_path
+    fill_in I18n.t('devise.registrations.new.email'), with: email
+    fill_in I18n.t('devise.registrations.new.password'), with: password
+    click_on I18n.t('devise.sessions.new.login')
+    expect(page).to have_current_path(dashboard_path)
   end
 end

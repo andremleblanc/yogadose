@@ -15,5 +15,9 @@
         <%= yield %>
       </div>
     </div>
+
+    <footer>
+      &copy; 2017 <% if Time.now.year != 2017 %> - <%= Time.now.year %> <% end %> Yogadose LLC
+    </footer>
   </body>
 </html>

@@ -6,10 +6,26 @@ $lightgray: #D8DDE1;
 $primary: #3598A6;
 $primary-dark: darken($primary, 10%);
 
+a {
+  color: $primary;
+
+  &:hover { color: $primary-dark; }
+}
+
+
 body {
   background-color: $lightgray;
   font-family: "Roboto", sans-serif;
 }
+
+footer {
+  background-color: $darkgray;
+  color: $lightgray;
+  padding: 20px 0;
+  text-align: center;
+}
+
+h1 { margin-bottom: 30px; }
 
 h2 { font-weight: 300 }
 
@@ -57,16 +73,52 @@ header {
 }
 
 .account {
+  padding: 50px 0;
+
   section {
-    .box {
+    position: relative;
+
+    h2 {
+      display: inline-block;
+      margin: 0;
+    }
+
+    h4 {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 0px;
+    }
+
+    .card {
       background-color: white;
       box-shadow: 0px 2px 4px rgba(0, 2, 4, 0.4);
-      margin-bottom: 50px;
-      padding: 25px 30px;
+      margin: 10px 0 50px;
+      padding: 10px 30px;
+
+      hr { margin: 30px 0; }
 
       .date, .price {
         font-size: 20px;
         font-weight: 300;
+      }
+
+      .header-link {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.1;
+        margin-top: 0;
+      }
+
+      .inner {
+        border-bottom: 1px solid $lightgray;
+        padding: 30px 0;
+
+        &:last-of-type { border-bottom: none; }
+      }
+
+      .label {
+        margin-left: 5px;
       }
 
       .price {
@@ -74,6 +126,8 @@ header {
         font-weight: normal;
       }
     }
+
+    .header-link { margin-top: 12px; }
   }
 }
 
@@ -95,4 +149,21 @@ header {
     background-color: darken(#3b5998, 10%);
     color: white;
   }
+}
+
+.header-link {
+  display: inline-block;
+  float: right;
+}
+
+.label-primary {
+  background-color: $primary;
+  border-radius: 1em;
+  font-weight: 300;
+}
+
+.label-sm {
+  font-size: 10px;
+  font-weight: 100;
+  padding: 3px 10px;
 }

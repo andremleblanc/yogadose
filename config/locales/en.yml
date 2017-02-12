@@ -1,5 +1,6 @@
 en:
   account_settings: Account Settings
+  email: Email
   logout: Logout
   flash:
     facebook_error: Oops! Login with Facebook was unsuccessful.

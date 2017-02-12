@@ -41,7 +41,7 @@
       <div class="card">
         <div class="inner">
           <h4>Personal Information</h4>
-          <span class="header-link"><a href="#">Update</a></span>
+          <span class="header-link"><%= link_to 'Update', edit_user_registration_path %></span>
 
           <div><%= @user.name %></div>
           <div><%= @user.email %></div>

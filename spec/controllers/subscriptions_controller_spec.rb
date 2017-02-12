@@ -142,7 +142,7 @@ RSpec.describe SubscriptionsController, type: :controller do
       context 'and unauthorized' do
         let(:different_user) { create(:subscriber) }
         let(:subscription) { different_user.subscription }
-        it { expect(response).to redirect_to(root_path) }
+        it { expect(response).to redirect_to(dashboard_path) }
       end
 
       context 'and authorized' do

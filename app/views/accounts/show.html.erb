@@ -43,19 +43,13 @@
           <h4>Personal Information</h4>
           <span class="header-link"><a href="#">Update</a></span>
 
-          <div>Andre LeBlanc</div>
+          <div><%= @user.name %></div>
+          <div><%= @user.email %></div>
         </div>
 
         <div class="inner">
           <h4 style="margin-bottom: 0px">Connect To Facebook</h4>
           <span class="header-link"><a href="#">Connect</a></span>
-        </div>
-
-        <div class="inner">
-          <h4>Email</h4>
-          <span class="header-link"><a href="#">Change</a></span>
-
-          <div>andre.leblanc88@gmail.com</div>
         </div>
 
         <div class="inner">
@@ -69,6 +63,11 @@
           <h4>Privacy and Settings</h4>
           <p><a href="#">Manage Email Notifications</a></p>
           <p style="margin-bottom: 0"><a href="#">View Terms of Use</a></p>
+        </div>
+
+        <div class="inner">
+          <h4>Cancel Your Subscription</h4>
+          <span class="header-link"><a href="#">Cancel</a></span>
         </div>
       </div>
     </section>

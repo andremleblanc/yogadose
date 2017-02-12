@@ -4,11 +4,12 @@ Rails.application.routes.draw do
       omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
+  resource :account, only: [ :show ]
+  resources :accounts, only: [ :show ]
   resources :routines
   resources :subscriptions, only: %i(new create edit)
   resources :users, only: [ :index, :edit ]
 
-  get 'account', to: 'users#edit', as: :account
   get 'dashboard', to: 'dashboard#show', as: :dashboard
 
   # Authenticated Root

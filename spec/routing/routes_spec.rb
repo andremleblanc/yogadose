@@ -9,4 +9,5 @@ RSpec.describe 'routes', type: :routing do
                 reset_password_token: 'blah'
         })
   }
+  it { expect(get('/change_password')).to route_to('users#change_password')}
 end

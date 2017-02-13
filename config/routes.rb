@@ -6,10 +6,16 @@ Rails.application.routes.draw do
 
   resource :account, only: [ :show ]
   resources :accounts, only: [ :show ]
+
   resources :routines
   resources :subscriptions, only: %i(new create edit)
-  resources :users, only: [ :index, :edit ]
 
+  resources :users, only: [ :index, :edit ]
+  resource :user, only: []
+  get 'change_password', to: 'users#change_password', as: :change_password
+  put 'update_password', to: 'users#update_password', as: :update_password
+
+  #TODO: Convert to resource
   get 'dashboard', to: 'dashboard#show', as: :dashboard
 
   # Authenticated Root

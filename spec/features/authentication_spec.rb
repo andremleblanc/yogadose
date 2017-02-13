@@ -17,6 +17,7 @@ RSpec.feature 'Authentication', type: :feature, js: true do
   let(:email) { Faker::Internet.email }
   let(:name) { Faker::Name.name }
   let(:password) { Faker::Internet.password(8) }
+  let(:new_password) { Faker::Internet.password(8) }
 
   xit 'Sign up with email, connect facebook, signout, login with facebook' do
     visit root_path
@@ -50,9 +51,19 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     click_on I18n.t('devise.sessions.new.facebook_authentication')
     expect(page).to have_current_path(dashboard_path)
 
-    # Set Password
+    # Go to Account Settings
     click_on name
     click_on I18n.t('account_settings')
+    expect(page).to have_current_path(account_path)
+
+    # Go to change password page
+    click_link 'change-password'
+    expect(page).to have_current_path(change_password_path)
+
+    # Change password
+    fill_in 'New Password', with: new_password
+    fill_in 'Password Again', with: new_password
+    click_on 'Change Password'
     expect(page).to have_current_path(account_path)
 
     # Logout
@@ -63,7 +74,7 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     # Login
     visit new_user_session_path
     fill_in I18n.t('devise.registrations.new.email'), with: email
-    fill_in I18n.t('devise.registrations.new.password'), with: password
+    fill_in I18n.t('devise.registrations.new.password'), with: new_password
     click_on I18n.t('devise.sessions.new.login')
     expect(page).to have_current_path(dashboard_path)
   end

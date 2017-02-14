@@ -5,7 +5,7 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     Sidekiq::Testing.inline!
     OmniAuth.config.test_mode = true
     OmniAuth.config.add_mock(:facebook, {
-        uid: '12345',
+        uid: Faker::Number.number(5),
         info: { email: email, name: name }
     })
   end
@@ -15,25 +15,26 @@ RSpec.feature 'Authentication', type: :feature, js: true do
   end
 
   let(:email) { Faker::Internet.email }
+  let(:alt_email) { Faker::Internet.email }
   let(:name) { Faker::Name.name }
   let(:password) { Faker::Internet.password(8) }
   let(:new_password) { Faker::Internet.password(8) }
 
-  xit 'Sign up with email, connect facebook, signout, login with facebook' do
-    visit root_path
-    click_on I18n.t('pages.home.sign_up')
-    expect(page).to have_current_path(new_user_registration_path)
+  it 'Sign up with email, connect facebook, logout, login with facebook' do
+    # Login
+    visit new_user_session_path
+    click_link I18n.t('devise.shared.links.sign_up')
 
+    # Sign Up Page
     fill_in I18n.t('devise.registrations.new.name'), with: name
-    fill_in I18n.t('devise.registrations.new.email'), with: email
+    fill_in I18n.t('devise.registrations.new.email'), with: alt_email
     fill_in I18n.t('devise.registrations.new.password'), with: password
     fill_in I18n.t('devise.registrations.new.password_confirmation'), with: password
     click_on 'Sign Up'
 
+    # Subscription Settings
     expect(page).to have_current_path(new_subscription_path)
-    #TODO: expect(page).not_to have_content(I18n.t('devise.registrations.signed_up'))
     expect(page).to have_content(name)
-
     fill_in 'card-number', with: '4000000000000077'
     fill_in 'exp-month', with: Time.now.strftime('%m')
     fill_in 'exp-year', with: Time.now.advance(years: 1).strftime('%y')
@@ -42,14 +43,43 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     click_on I18n.t('subscriptions.new.subscribe')
 
     expect(page).to have_current_path(account_path)
-    expect(User.find_by(email: email).payment_method).to be
+    expect(User.find_by(email: alt_email).payment_method).to be
+
+    # Go to Account Settings
+    click_on name
+    click_on I18n.t('account_settings')
+    expect(page).to have_current_path(account_path)
+
+    # Connect account
+    click_link 'connect-facebook-account'
+    expect(page).to have_current_path(account_path)
+    expect(page).to have_content('Successfully connected Facebook account.')
+
+    # Logout
+    click_on name
+    click_on I18n.t('logout')
+    expect(page).to have_current_path(new_user_session_path)
+
+    # Login
+    expect_any_instance_of(User).to receive(:active?).and_return(true) #TODO: remove this stub
+    click_on I18n.t('devise.sessions.new.facebook_authentication')
+    expect(page).to have_current_path(dashboard_path)
   end
 
   it 'Sign up with facebook, setup credentials, logout, login with credentials' do
     # Sign Up and Login
     visit new_user_session_path
     click_on I18n.t('devise.sessions.new.facebook_authentication')
-    expect(page).to have_current_path(dashboard_path)
+    expect(page).to have_current_path(new_subscription_path)
+
+    # Subscription Settings
+    expect(page).to have_content(name)
+    fill_in 'card-number', with: '4000000000000077'
+    fill_in 'exp-month', with: Time.now.strftime('%m')
+    fill_in 'exp-year', with: Time.now.advance(years: 1).strftime('%y')
+    fill_in 'cvc', with: Faker::Number.number(3)
+    fill_in 'zipcode', with: Faker::Number.number(5)
+    click_on I18n.t('subscriptions.new.subscribe')
 
     # Go to Account Settings
     click_on name
@@ -69,9 +99,10 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     # Logout
     click_on name
     click_on I18n.t('logout')
-    expect(page).to have_current_path('/temp.html')
+    expect(page).to have_current_path(new_user_session_path)
 
     # Login
+    expect_any_instance_of(User).to receive(:active?).and_return(true) #TODO: remove this stub
     visit new_user_session_path
     fill_in I18n.t('devise.registrations.new.email'), with: email
     fill_in I18n.t('devise.registrations.new.password'), with: new_password

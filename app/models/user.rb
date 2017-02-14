@@ -19,7 +19,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    true
+    false
   end
 
   private

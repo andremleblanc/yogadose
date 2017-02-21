@@ -15,22 +15,34 @@
         <a href="#">View Billing History</a><%# TODO: fix link %>
       </span>
 
-      <div class="card">
-        <div class="inner">
-          <h4>Plan</h4>
-          <%# TODO: fix %>
-          <div>
-            Yogadose Monthly <span class="label label-primary label-sm">Active</span>
-            <span class="pull-right">$13.99/mo</span>
-          </div>
-        </div>
+      <% if @presenter.payment_method? %>
+          <div class="card">
+            <div class="inner">
+              <h4><%= t('.your_plan') %></h4>
+              <%# TODO: fix %>
+              <div>
+                Yogadose Monthly <span class="label label-primary label-sm">Active</span>
+                <span class="pull-right">$13.99/mo</span>
+              </div>
+            </div>
 
-        <div class="inner">
-          <h4>Payment Method</h4>
-          <span class="header-link"><a href="#">Update</a></span>
-          <div>Visa: **** **** **** 1234</div>
-        </div>
-      </div>
+
+            <div class="inner">
+              <h4>Payment Method</h4>
+              <span class="header-link"><%= link_to 'Update', new_subscription_path %></span>
+              <div><%= @presenter.payment_method_summary %></div>
+            </div>
+          </div>
+      <% else %>
+          <div class="card">
+            <div class="inner">
+              <h4><%= t('.your_plan') %></h4>
+              <span class="header-link"><%= link_to 'Sign Up', new_subscription_path %></span>
+              <div><i><%= t('.no_subscription') %></i></div>
+            </div>
+          </div>
+      <% end %>
+
     </section>
   </div>
 
@@ -43,8 +55,8 @@
           <h4>Personal Information</h4>
           <span class="header-link"><%= link_to 'Update', edit_user_registration_path %></span>
 
-          <div><%= @user.name %></div>
-          <div><%= @user.email %></div>
+          <div><%= @presenter.name %></div>
+          <div><%= @presenter.email %></div>
         </div>
 
         <div class="inner">

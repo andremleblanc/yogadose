@@ -22,6 +22,7 @@ class SubscriptionsController < ApplicationController
   def edit
     @subscription = Subscription.find(params[:id])
     authorize @subscription
+    render :edit
   end
 
   private

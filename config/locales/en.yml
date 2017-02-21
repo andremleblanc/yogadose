@@ -2,6 +2,10 @@ en:
   account_settings: Account Settings
   email: Email
   logout: Logout
+  accounts:
+    show:
+      no_subscription: You have no subscription.
+      your_plan: Your Plan
   flash:
     facebook_error: Oops! Login with Facebook was unsuccessful.
     google_error: Oops! Login with Google was unsuccessful.
@@ -19,7 +23,7 @@ en:
       logout: Logout
       sign_up: Sign Up
   subscriptions:
-    new:
+    payment_info:
       card_number: Card Number
       cvc: CVC
       expiration: Expiration

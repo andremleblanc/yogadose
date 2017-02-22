@@ -14,11 +14,11 @@ ActiveRecord::Migration.maintain_test_schema!
 Sidekiq::Testing.fake!
 
 RSpec.configure do |config|
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
-  config.include RequestSpecHelper, type: :feature
   config.include RequestSpecHelper, type: :request
+  config.include FeatureSpecHelper, type: :feature
 end
 
 VCR.configure do |config|

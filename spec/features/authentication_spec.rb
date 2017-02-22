@@ -21,11 +21,10 @@ RSpec.feature 'Authentication', type: :feature, js: true do
   let(:new_password) { Faker::Internet.password(8) }
 
   it 'Sign up with email, connect facebook, logout, login with facebook' do
-    # Login
     visit new_user_session_path
     click_link I18n.t('devise.shared.links.sign_up')
 
-    # Sign Up Page
+    # Sign Up
     fill_in I18n.t('devise.registrations.new.name'), with: name
     fill_in I18n.t('devise.registrations.new.email'), with: alt_email
     fill_in I18n.t('devise.registrations.new.password'), with: password
@@ -34,13 +33,12 @@ RSpec.feature 'Authentication', type: :feature, js: true do
 
     # Subscription Settings
     expect(page).to have_current_path(new_subscription_path)
-    expect(page).to have_content(name)
     fill_in 'card-number', with: '4000000000000077'
     fill_in 'exp-month', with: Time.now.strftime('%m')
     fill_in 'exp-year', with: Time.now.advance(years: 1).strftime('%y')
     fill_in 'cvc', with: Faker::Number.number(3)
     fill_in 'zipcode', with: Faker::Number.number(5)
-    click_on I18n.t('subscriptions.new.subscribe')
+    click_on I18n.t('subscriptions.payment_info.subscribe')
 
     expect(page).to have_current_path(account_path)
     expect(User.find_by(email: alt_email).payment_method).to be
@@ -70,16 +68,18 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     # Sign Up and Login
     visit new_user_session_path
     click_on I18n.t('devise.sessions.new.facebook_authentication')
-    expect(page).to have_current_path(new_subscription_path)
 
     # Subscription Settings
-    expect(page).to have_content(name)
+    expect(page).to have_current_path(new_subscription_path)
     fill_in 'card-number', with: '4000000000000077'
     fill_in 'exp-month', with: Time.now.strftime('%m')
     fill_in 'exp-year', with: Time.now.advance(years: 1).strftime('%y')
     fill_in 'cvc', with: Faker::Number.number(3)
     fill_in 'zipcode', with: Faker::Number.number(5)
-    click_on I18n.t('subscriptions.new.subscribe')
+    click_on I18n.t('subscriptions.payment_info.subscribe')
+
+    expect(page).to have_current_path(account_path)
+    expect(User.find_by(email: email).payment_method).to be
 
     # Go to Account Settings
     click_on name

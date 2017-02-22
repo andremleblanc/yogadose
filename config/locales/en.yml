@@ -1,10 +1,14 @@
 en:
+  dictionary:
+    sign_up: &sign_up Sign Up
+
   account_settings: Account Settings
   email: Email
   logout: Logout
   accounts:
     show:
       no_subscription: You have no subscription.
+      sign_up: *sign_up
       your_plan: Your Plan
   flash:
     facebook_error: Oops! Login with Facebook was unsuccessful.
@@ -21,7 +25,7 @@ en:
     home:
       login: Login
       logout: Logout
-      sign_up: Sign Up
+      sign_up: *sign_up
   subscriptions:
     payment_info:
       card_number: Card Number

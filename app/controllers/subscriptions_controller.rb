@@ -4,20 +4,15 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    puts "create"
     if current_user.subscription.blank?
-      puts "blank"
-      puts "stripe: #{stripe_token}"
-      puts "stripe: #{stripe_token.present?}"
       if stripe_token.present? && create_subscription
         SubscriptionWorker.perform_async(current_user.id, stripe_token)
         flash[:success] = I18n.t('flash.subscription_success')
         redirect_to account_path
       else
         # TODO: Record metric and log; improve error message
-        puts "error: #{create_subscription.errors.inspect}"
         flash[:error] = I18n.t('flash.subscription_error')
-        render :new
+        redirect_to new_subscription_path
       end
     else
       flash[:notice] = I18n.t('flash.subscription_already_exists')
@@ -38,7 +33,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def stripe_token
-    params[:token]
+    params[:stripeToken]
   end
 
   def subscription_params

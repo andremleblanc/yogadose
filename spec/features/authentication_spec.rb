@@ -30,14 +30,15 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     fill_in I18n.t('devise.registrations.new.password'), with: password
     fill_in I18n.t('devise.registrations.new.password_confirmation'), with: password
     click_on 'Sign Up'
+    expect(page).to have_current_path(new_subscription_path)
 
     # Subscription Settings
-    expect(page).to have_current_path(new_subscription_path)
-    fill_in 'card-number', with: '4000000000000077'
-    fill_in 'exp-month', with: Time.now.strftime('%m')
-    fill_in 'exp-year', with: Time.now.advance(years: 1).strftime('%y')
-    fill_in 'cvc', with: Faker::Number.number(3)
-    fill_in 'zipcode', with: Faker::Number.number(5)
+    within_frame('stripeField_card_element0') do
+      fill_in 'cardnumber', with: '4000000000000077'
+      fill_in 'exp-date', with: '2' + Time.now.advance(years: 1).strftime('%y')
+      fill_in 'cvc', with: Faker::Number.number(3)
+      fill_in 'postal', with: Faker::Number.number(5)
+    end
     click_on I18n.t('subscriptions.payment_info.subscribe')
 
     expect(page).to have_current_path(account_path)
@@ -68,14 +69,15 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     # Sign Up and Login
     visit new_user_session_path
     click_on I18n.t('devise.sessions.new.facebook_authentication')
+    expect(page).to have_current_path(new_subscription_path)
 
     # Subscription Settings
-    expect(page).to have_current_path(new_subscription_path)
-    fill_in 'card-number', with: '4000000000000077'
-    fill_in 'exp-month', with: Time.now.strftime('%m')
-    fill_in 'exp-year', with: Time.now.advance(years: 1).strftime('%y')
-    fill_in 'cvc', with: Faker::Number.number(3)
-    fill_in 'zipcode', with: Faker::Number.number(5)
+    within_frame('stripeField_card_element0') do
+      fill_in 'cardnumber', with: '4000000000000077'
+      fill_in 'exp-date', with: '2' + Time.now.advance(years: 1).strftime('%y')
+      fill_in 'cvc', with: Faker::Number.number(3)
+      fill_in 'postal', with: Faker::Number.number(5)
+    end
     click_on I18n.t('subscriptions.payment_info.subscribe')
 
     expect(page).to have_current_path(account_path)

@@ -28,8 +28,10 @@ en:
       sign_up: *sign_up
   subscriptions:
     payment_info:
+      card_info: Credit or Debit Card
       card_number: Card Number
       cvc: CVC
-      expiration: Expiration
+      exp_month: Exp Month
+      exp_year: Exp Year
       subscribe: Subscribe Now
       zipcode: Zipcode

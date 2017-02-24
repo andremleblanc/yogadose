@@ -49,7 +49,7 @@ RSpec.describe SubscriptionsController, type: :controller do
           sign_in(user)
         end
 
-        let(:params) {{ subscription: subscription_params, token: Faker::Lorem.characters(20) }}
+        let(:params) {{ subscription: subscription_params, stripeToken: Faker::Lorem.characters(20) }}
         let(:subscription_params) {{ }}
 
         context 'and subscription is valid' do
@@ -87,9 +87,9 @@ RSpec.describe SubscriptionsController, type: :controller do
             expect(user.subscription).to be nil
           end
 
-          it 'renders new' do
+          it 'redirects to new' do
             post :create, params: params
-            expect(response).to render_template(:new)
+            expect(response).to redirect_to(new_subscription_path)
           end
 
           it 'has the correct flash message' do
@@ -106,7 +106,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
         let(:user) { create(:subscriber) }
         let(:params) {{ subscription: subscription_params }}
-        let(:subscription_params) {{ token: Faker::Lorem.characters(20) }}
+        let(:subscription_params) {{ stripeToken: Faker::Lorem.characters(20) }}
 
         it 'does not allow a second subscription' do
           post :create, params: params

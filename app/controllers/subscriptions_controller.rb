@@ -1,5 +1,6 @@
 class SubscriptionsController < ApplicationController
   def new
+    @presenter = SubscriptionsPresenter.new(current_user.subscription)
     render current_user.subscription.blank? ? :new : :edit
   end
 
@@ -21,9 +22,14 @@ class SubscriptionsController < ApplicationController
   end
 
   def edit
-    @subscription = Subscription.find(params[:id])
-    authorize @subscription
+    subscription = Subscription.find_by(id: params[:id]) || current_user.subscription
+    authorize subscription
+    @presenter = SubscriptionsPresenter.new(subscription)
     render :edit
+  end
+
+  def update
+
   end
 
   private

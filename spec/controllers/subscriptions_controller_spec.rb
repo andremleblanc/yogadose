@@ -19,6 +19,7 @@ RSpec.describe SubscriptionsController, type: :controller do
         end
 
         it { expect(response).to render_template(:new) }
+        it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
       end
 
       context 'and subscription' do
@@ -29,6 +30,7 @@ RSpec.describe SubscriptionsController, type: :controller do
         end
 
         it { expect(response).to render_template(:edit) }
+        it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
       end
     end
   end
@@ -124,30 +126,97 @@ RSpec.describe SubscriptionsController, type: :controller do
   context 'GET edit' do
     let(:subscription) { create(:subscription) }
 
+    context 'with id' do
+      context 'when unauthenticated' do
+        it 'redirects to login' do
+          get :edit, params: { id: subscription.id }
+          expect(response).to redirect_to(new_user_session_path)
+        end
+      end
+
+      context 'when authenticated' do
+        let(:user) { create(:subscriber) }
+
+        before do
+          sign_in(user)
+          get :edit, params: { id: subscription.id }
+        end
+
+        context 'and unauthorized' do
+          let(:different_user) { create(:subscriber) }
+          let(:subscription) { different_user.subscription }
+          it { expect(response).to redirect_to(dashboard_path) }
+        end
+
+        context 'and authorized' do
+          let(:subscription) { user.subscription }
+          it { expect(response).to render_template(:edit) }
+          it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
+        end
+      end
+    end
+
+    context 'with no id' do
+      context 'when unauthenticated' do
+        it 'redirects to login' do
+          get :edit
+          expect(response).to redirect_to(new_user_session_path)
+        end
+      end
+
+      context 'when authenticated' do
+        let(:user) { create(:subscriber) }
+        let(:subscription) { user.subscription }
+
+        before do
+          sign_in(user)
+          get :edit
+        end
+
+        it { expect(response).to render_template(:edit) }
+        it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
+      end
+    end
+  end
+
+  context 'PATCH update' do
+    let(:user) { create(:user) }
+
     context 'when unauthenticated' do
       it 'redirects to login' do
-        get :edit, params: { id: subscription.id }
+        patch :update, id: 1
         expect(response).to redirect_to(new_user_session_path)
       end
     end
 
     context 'when authenticated' do
-      let(:user) { create(:subscriber) }
-
       before do
         sign_in(user)
-        get :edit, params: { id: subscription.id }
       end
 
-      context 'and unauthorized' do
-        let(:different_user) { create(:subscriber) }
-        let(:subscription) { different_user.subscription }
-        it { expect(response).to redirect_to(dashboard_path) }
+      context 'and subscriber' do
+        let(:user) { create(:subscriber) }
+
+        context 'updating self' do
+          it 'is updates payment method' do
+            patch :update, id: user.subscription.id
+            expect{ user.subscription.payment_method }.to change
+          end
+        end
+
+        context 'updating a different user' do
+          it 'redirects to account path' do
+            expect(true).to be false
+          end
+        end
       end
 
-      context 'and authorized' do
-        let(:subscription) { user.subscription }
-        it { expect(response).to render_template(:edit) }
+      context 'and admin' do
+        context 'updating a different user' do
+          it 'updates payment method' do
+            expect(true).to be false
+          end
+        end
       end
     end
   end

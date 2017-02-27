@@ -9,7 +9,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="subscription">
       <h2>Your Subscription</h2>
       <span class="header-link">
         <a href="#">View Billing History</a><%# TODO: fix link %>
@@ -29,7 +29,7 @@
 
             <div class="inner">
               <h4>Payment Method</h4>
-              <span class="header-link"><%= link_to 'Update', new_subscription_path %></span>
+              <span class="header-link"><%= link_to t('.update'), edit_subscription_path %></span>
               <div><%= @presenter.payment_method_summary %></div>
             </div>
           </div>

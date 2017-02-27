@@ -7,6 +7,11 @@ RSpec.describe Subscription, type: :model do
       subscription = create(:subscription, user: subscriber)
       expect(subscription.user).to be subscriber
     end
+
+    it 'has a payment method' do
+      subscription = create(:subscription)
+      expect(subscription.create_payment_method(attributes_for :payment_method)).to be_a PaymentMethod
+    end
   end
 
   describe 'validations' do

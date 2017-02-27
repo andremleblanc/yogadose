@@ -1,6 +1,7 @@
 en:
   dictionary:
     sign_up: &sign_up Sign Up
+    update: &update Update
 
   account_settings: Account Settings
   email: Email
@@ -9,6 +10,7 @@ en:
     show:
       no_subscription: You have no subscription.
       sign_up: *sign_up
+      update: *update
       your_plan: Your Plan
   flash:
     facebook_error: Oops! Login with Facebook was unsuccessful.
@@ -27,6 +29,8 @@ en:
       logout: Logout
       sign_up: *sign_up
   subscriptions:
+    edit:
+      submit_label: Update Payment Method
     payment_info:
       card_info: Credit or Debit Card
       card_number: Card Number
@@ -35,3 +39,5 @@ en:
       exp_year: Exp Year
       subscribe: Subscribe Now
       zipcode: Zipcode
+    new:
+      submit_label: Add Payment Method

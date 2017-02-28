@@ -9,8 +9,8 @@ RSpec.describe User, type: :model do
 
     it 'has many payment_method' do
       subscriber = create(:subscriber)
-      expect(subscriber.create_payment_method(attributes_for :payment_method)).to be_a PaymentMethod
-      expect(subscriber.create_payment_method(attributes_for :payment_method)).to be_a PaymentMethod
+      expect(subscriber.payment_methods.create(attributes_for :payment_method)).to be_a PaymentMethod
+      expect(subscriber.payment_methods.create(attributes_for :payment_method)).to be_a PaymentMethod
       expect(subscriber.payment_methods.count).to be 2
     end
 

@@ -42,8 +42,12 @@ RSpec.describe SubscriptionWorker, type: :worker do
       end
     end
 
-    context 'when the payment method has already been created' do
-      let!(:subscriber) { create(:subscriber, :with_payment_method) }
+    context 'when a payment method with the same token has already been created' do
+      let(:subscriber) { create(:subscriber) }
+
+      before do
+        subscriber.payment_methods.create(attributes_for(:payment_method, stripe_token: token))
+      end
 
       it "doesn't call create_payment_method" do
         expect{ perform_async }.not_to change{ PaymentMethod.count }

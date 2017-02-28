@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_one :payment_method
+  has_many :payment_methods
   has_one :subscription
 
   before_validation :default_values

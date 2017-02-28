@@ -17,9 +17,11 @@ ActiveRecord::Schema.define(version: 20170103022813) do
 
   create_table "payment_methods", force: :cascade do |t|
     t.integer  "user_id"
+    t.integer  "subscription_id"
     t.string   "stripe_token"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["subscription_id"], name: "index_payment_methods_on_subscription_id", using: :btree
     t.index ["user_id"], name: "index_payment_methods_on_user_id", using: :btree
   end
 

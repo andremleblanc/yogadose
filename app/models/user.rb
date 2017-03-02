@@ -22,9 +22,31 @@ class User < ApplicationRecord
     false
   end
 
+  # def default_source
+  #   stripe_customer ? stripe_customer.default_source : nil
+  # end
+
+  def update_stripe(args)
+    args.each { |k,v| stripe_customer.send("#{k}=", v) }
+    stripe_customer.save
+  end
+
   private
 
   def default_values
     self.admin = false if self.admin.nil?
+  end
+
+  def link_to_stripe
+    stripe_customer = Stripe::Customer.create({ email: email })
+    self.stripe_id = stripe_customer.id
+    self.save!
+    stripe_customer
+  end
+
+  def stripe_customer
+    @stripe_customer ||= begin
+      stripe_id ? Stripe::Customer.retrieve(stripe_id) : link_to_stripe
+    end
   end
 end

@@ -112,7 +112,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
         it 'does not allow a second subscription' do
           post :create, params: params
-          expect(response).to render_template(:edit)
+          expect(response).to redirect_to(edit_subscription_path)
         end
 
         it 'has the correct flash message' do
@@ -184,7 +184,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
     context 'when unauthenticated' do
       it 'redirects to login' do
-        patch :update, id: 1
+        patch :update, params: { id: 1 }
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -198,9 +198,10 @@ RSpec.describe SubscriptionsController, type: :controller do
         let(:user) { create(:subscriber) }
 
         context 'updating self' do
-          it 'is updates payment method' do
-            patch :update, id: user.subscription.id
-            expect{ user.subscription.payment_method }.to change
+          it 'updates Stripe::Customer record' do
+            patch :update, params: { id: user.subscription.id }
+            expect { user.subscription.payment_method }.to change
+            expect { user.default_source }.to change
           end
         end
 
@@ -213,7 +214,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
       context 'and admin' do
         context 'updating a different user' do
-          it 'updates payment method' do
+          it 'updates Stripe::Customer record' do
             expect(true).to be false
           end
         end

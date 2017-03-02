@@ -7,13 +7,6 @@ RSpec.describe User, type: :model do
       expect(subscriber.create_subscription(attributes_for :subscription)).to be_a Subscription
     end
 
-    it 'has many payment_method' do
-      subscriber = create(:subscriber)
-      expect(subscriber.payment_methods.create(attributes_for :payment_method)).to be_a PaymentMethod
-      expect(subscriber.payment_methods.create(attributes_for :payment_method)).to be_a PaymentMethod
-      expect(subscriber.payment_methods.count).to be 2
-    end
-
     xit 'destroying a user keep subscription' do
       pending
       #subscriber
@@ -64,6 +57,80 @@ RSpec.describe User, type: :model do
     xit 'is true' do
       user = create(:user)
       expect(user.active?).to be true
+    end
+  end
+
+  describe 'instance methods' do
+    let(:user) { create(:user) }
+    let(:stripe_customer) { double('Stripe::Customer') }
+
+    # describe '#default_source' do
+    #   context 'when user defined in Stripe' do
+    #     before do
+    #       VCR.use_cassette('users/link_to_stripe') do
+    #         user.link_to_stripe
+    #       end
+    #
+    #       VCR.use_cassette('users/get_token') do
+    #         token = Stripe::Token.create(
+    #             :card => {
+    #                 :number => "4242424242424242",
+    #                 :exp_month => 2,
+    #                 :exp_year => 2018,
+    #                 :cvc => "314"
+    #             },
+    #         )
+    #       end
+    #
+    #       user.update_stripe(source: token)
+    #     end
+    #
+    #     it 'returns the default source' do
+    #       VCR.use_cassette('users/default_source') do
+    #         expect(user.default_source).to be
+    #       end
+    #     end
+    #   end
+    #
+    #   context 'when user not defined in Stripe' do
+    #     it 'returns nil' do
+    #       expect(user.default_source).to be_nil
+    #     end
+    #   end
+    # end
+
+    describe '#update_stripe' do
+      subject { user.update_stripe(email: 'mydumbtest@yogadose.xyz') }
+      let(:customer_id) { 'cus_1234' }
+
+      context 'when user defined in Stripe' do
+        let(:user) { create(:user, stripe_id: customer_id) }
+
+        it 'updates Stripe::Customer' do
+          expect(Stripe::Customer).to receive(:retrieve).with(customer_id).and_return(stripe_customer)
+          expect(stripe_customer).to receive(:email=)
+          expect(stripe_customer).to receive(:save)
+
+          expect(user.stripe_id).to eq customer_id
+          subject
+          expect(user.stripe_id).to eq customer_id
+        end
+      end
+
+      context 'when user not defined in Stripe' do
+        let(:user) { create(:user, stripe_id: nil) }
+
+        it 'creates Stripe::Customer and updates' do
+          expect(Stripe::Customer).to receive(:create).with(email: user.email).and_return(stripe_customer)
+          expect(stripe_customer).to receive(:id).and_return(customer_id)
+          expect(stripe_customer).to receive(:email=)
+          expect(stripe_customer).to receive(:save)
+
+          expect(user.stripe_id).to be_nil
+          subject
+          expect(user.stripe_id).to eq customer_id
+        end
+      end
     end
   end
 end

@@ -17,7 +17,7 @@ class SubscriptionsController < ApplicationController
       end
     else
       flash[:notice] = I18n.t('flash.subscription_already_exists')
-      render :edit
+      redirect_to edit_subscription_path
     end
   end
 
@@ -29,7 +29,8 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-
+    subscription = Subscription.find(id: params[:id])
+    authorize subscription
   end
 
   private

@@ -11,7 +11,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
 
   let(:user) { User.find_by(email: @email) }
 
-  it 'Allows create, edit, and delete from account page' do
+  it 'Allows create, edit, delete, and reactivate from account page' do
     sign_in
 
     # Account Page

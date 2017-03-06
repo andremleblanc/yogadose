@@ -8,6 +8,7 @@ en:
   logout: Logout
   accounts:
     show:
+      cancel_subscription: Are you sure? You will have access to your account until the end of the billing period.
       no_subscription: You have no subscription.
       sign_up: *sign_up
       update: *update
@@ -20,6 +21,8 @@ en:
     subscription_success: Subscription created successfully.
     subscription_updated: Subscription updated successfully.
     subscription_not_updated: There was a problem updating your subscription.
+    subscription:
+      cancelled: Your subscription was cancelled successfully.
   layouts:
     application:
       all_workouts: All Workouts

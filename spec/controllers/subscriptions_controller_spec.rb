@@ -208,11 +208,35 @@ RSpec.describe SubscriptionsController, type: :controller do
         let(:token) { Faker::Lorem.characters(20) }
 
         it 'calls SubscriptionWorker' do
-          expect(SubscriptionWorker).to receive(:perform_async)
+          expect(SubscriptionWorker).to receive(:perform_async).with(user.id, token)
           patch :update, params: { id: user.subscription.id, stripeToken: token }
           expect(response).to redirect_to(account_path)
           expect(flash[:success]).to match I18n.t('flash.subscription_updated')
         end
+      end
+    end
+  end
+
+  context 'DELETE destroy' do
+    let(:subscriber) { create(:subscriber) }
+    let(:subscription) { subscriber.subscription }
+    let(:result) { delete :destroy, params: { id: subscription.id } }
+
+    context 'unauthenticated' do
+      it 'redirects to login' do
+        result
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'authenticated' do
+      before do
+        sign_in subscriber
+      end
+
+      it 'cancels a Stripe subscription' do
+        expect(subject).to receive(:cancel_subscription)
+        result
       end
     end
   end

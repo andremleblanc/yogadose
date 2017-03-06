@@ -29,7 +29,6 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-    subscription = current_user.subscription
     if stripe_token.present?
       flash[:success] = I18n.t('flash.subscription_updated')
       SubscriptionWorker.perform_async(current_user.id, stripe_token)
@@ -40,7 +39,17 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+  def destroy
+    cancel_subscription
+    flash[:success] = I18n.t('flash.subscription.cancelled')
+    redirect_to account_path
+  end
+
   private
+
+  def cancel_subscription
+    current_user.subscription.cancel_subscription
+  end
 
   def create_subscription
     current_user.create_subscription

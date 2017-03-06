@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :accounts, only: [ :show ]
 
   resources :routines
-  resource :subscription, only: %i(edit)
+  resource :subscription, only: %i(destroy edit)
   resources :subscriptions, only: %i(new create update)
 
   resources :users, only: [ :index, :edit ]

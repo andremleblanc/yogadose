@@ -19,8 +19,15 @@ class AccountsPresenter
     payment_method ? card_string : 'None'
   end
 
+  def subscription
+    @subscription ||= @user.subscription
+  end
+
+  def active_subscription?
+    subscription.active?
+  end
+
   def subscription_path
-    subscription = @user.subscription
     subscription ? edit_subscription_path(subscription) : new_subscription_path
   end
 

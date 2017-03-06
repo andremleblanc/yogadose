@@ -33,10 +33,17 @@
               <div><%= @presenter.payment_method_summary %></div>
             </div>
 
-            <div class="inner">
-              <h4>Cancel Your Subscription</h4>
-              <span class="header-link"><a href="#">Cancel</a></span>
-            </div>
+            <% if @presenter.active_subscription? %>
+                <div class="inner">
+                  <h4>Cancel Your Subscription</h4>
+                  <span class="header-link"><%= link_to 'Cancel', subscription_path, method: :delete, data: { confirm: t('.cancel_subscription') } %></span>
+                </div>
+            <% else %>
+                <div class="inner">
+                  <h4>Reactivate Your Subscription</h4>
+                  <span class="header-link"><a href="#">Cancel</a></span>
+                </div>
+            <% end %>
           </div>
       <% else %>
           <div class="card">

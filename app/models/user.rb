@@ -25,6 +25,10 @@ class User < ApplicationRecord
     stripe_customer ? stripe_customer.sources.data.last : nil
   end
 
+  def stripe_customer
+    @stripe_customer ||= stripe_id ? Stripe::Customer.retrieve(stripe_id) : link_to_stripe
+  end
+
   def update_stripe(args)
     args.each { |k,v| stripe_customer.send("#{k}=", v) }
     stripe_customer.save
@@ -41,11 +45,5 @@ class User < ApplicationRecord
     self.stripe_id = stripe_customer.id
     self.save!
     stripe_customer
-  end
-
-  def stripe_customer
-    @stripe_customer ||= begin
-      stripe_id ? Stripe::Customer.retrieve(stripe_id) : link_to_stripe
-    end
   end
 end

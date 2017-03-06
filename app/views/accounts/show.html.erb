@@ -32,6 +32,11 @@
               <span class="header-link"><%= link_to t('.update'), edit_subscription_path %></span>
               <div><%= @presenter.payment_method_summary %></div>
             </div>
+
+            <div class="inner">
+              <h4>Cancel Your Subscription</h4>
+              <span class="header-link"><a href="#">Cancel</a></span>
+            </div>
           </div>
       <% else %>
           <div class="card">
@@ -75,11 +80,6 @@
           <h4>Privacy and Settings</h4>
           <p><a href="#">Manage Email Notifications</a></p>
           <p style="margin-bottom: 0"><a href="#">View Terms of Use</a></p>
-        </div>
-
-        <div class="inner">
-          <h4>Cancel Your Subscription</h4>
-          <span class="header-link"><a href="#">Cancel</a></span>
         </div>
       </div>
     </section>

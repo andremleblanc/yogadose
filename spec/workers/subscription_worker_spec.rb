@@ -15,6 +15,9 @@ RSpec.describe SubscriptionWorker, type: :worker do
 
   describe '#perform_async' do
     context "when the job hasn't run" do
+      let(:stripe_response) { double("Stripe::Response") }
+      let(:stripe_subscription_id) { 'sub_1234' }
+
       it "updates user's Stripe::Customer record" do
         expect(User).to receive(:find).and_return(subscriber)
         expect(subscriber).to receive(:update_stripe).with(
@@ -23,7 +26,9 @@ RSpec.describe SubscriptionWorker, type: :worker do
             plan: SubscriptionWorker::PLAN,
             trial_end: subscriber.subscription.trial_expiry.to_i
         )
+        expect_any_instance_of(subject).to receive(:parse_subscription_id).and_return(stripe_subscription_id)
         subject.perform_async(subscriber.id, token)
+        expect(subscriber.subscription.stripe_id).to eq stripe_subscription_id
       end
     end
   end

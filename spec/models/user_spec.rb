@@ -64,40 +64,44 @@ RSpec.describe User, type: :model do
     let(:user) { create(:user) }
     let(:stripe_customer) { double('Stripe::Customer') }
 
-    # describe '#default_source' do
-    #   context 'when user defined in Stripe' do
-    #     before do
-    #       VCR.use_cassette('users/link_to_stripe') do
-    #         user.link_to_stripe
-    #       end
-    #
-    #       VCR.use_cassette('users/get_token') do
-    #         token = Stripe::Token.create(
-    #             :card => {
-    #                 :number => "4242424242424242",
-    #                 :exp_month => 2,
-    #                 :exp_year => 2018,
-    #                 :cvc => "314"
-    #             },
-    #         )
-    #       end
-    #
-    #       user.update_stripe(source: token)
-    #     end
-    #
-    #     it 'returns the default source' do
-    #       VCR.use_cassette('users/default_source') do
-    #         expect(user.default_source).to be
-    #       end
-    #     end
-    #   end
-    #
-    #   context 'when user not defined in Stripe' do
-    #     it 'returns nil' do
-    #       expect(user.default_source).to be_nil
-    #     end
-    #   end
-    # end
+    describe '#default_source' do
+      context 'when user defined in Stripe' do
+        before do
+          VCR.use_cassette('users/link_to_stripe') do
+            user.link_to_stripe
+          end
+
+          VCR.use_cassette('users/get_token') do
+            token = Stripe::Token.create(
+                :card => {
+                    :number => "4242424242424242",
+                    :exp_month => 2,
+                    :exp_year => 2018,
+                    :cvc => "314"
+                },
+            )
+          end
+
+          user.update_stripe(source: token)
+        end
+
+        xit 'returns the default source' do
+          VCR.use_cassette('users/default_source') do
+            expect(user.default_source).to be
+          end
+        end
+      end
+
+      context 'when user not defined in Stripe' do
+        xit 'returns nil' do
+          expect(user.default_source).to be_nil
+        end
+      end
+    end
+
+    describe '#payment_method' do
+      xit 'does something'
+    end
 
     describe '#update_stripe' do
       subject { user.update_stripe(email: 'mydumbtest@yogadose.xyz') }

@@ -194,29 +194,24 @@ RSpec.describe SubscriptionsController, type: :controller do
         sign_in(user)
       end
 
-      context 'and subscriber' do
-        let(:user) { create(:subscriber) }
+      let(:user) { create(:subscriber) }
 
-        context 'updating self' do
-          it 'updates Stripe::Customer record' do
-            patch :update, params: { id: user.subscription.id }
-            expect { user.subscription.payment_method }.to change
-            expect { user.default_source }.to change
-          end
-        end
-
-        context 'updating a different user' do
-          it 'redirects to account path' do
-            expect(true).to be false
-          end
+      context 'without stripe token' do
+        it 'redirects to edit subscription path' do
+          patch :update, params: { id: 1 }
+          expect(response).to redirect_to(edit_subscription_path)
+          expect(flash[:error]).to match I18n.t('flash.subscription_not_updated')
         end
       end
 
-      context 'and admin' do
-        context 'updating a different user' do
-          it 'updates Stripe::Customer record' do
-            expect(true).to be false
-          end
+      context 'with stripe token' do
+        let(:token) { Faker::Lorem.characters(20) }
+
+        it 'calls SubscriptionWorker' do
+          expect(SubscriptionWorker).to receive(:perform_async)
+          patch :update, params: { id: user.subscription.id, stripeToken: token }
+          expect(response).to redirect_to(account_path)
+          expect(flash[:success]).to match I18n.t('flash.subscription_updated')
         end
       end
     end

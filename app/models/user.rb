@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  has_many :payment_methods
   has_one :subscription
 
   before_validation :default_values
@@ -22,9 +21,9 @@ class User < ApplicationRecord
     false
   end
 
-  # def default_source
-  #   stripe_customer ? stripe_customer.default_source : nil
-  # end
+  def default_source
+    stripe_customer ? stripe_customer.sources.data.last : nil
+  end
 
   def update_stripe(args)
     args.each { |k,v| stripe_customer.send("#{k}=", v) }

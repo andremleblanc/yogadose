@@ -2,6 +2,10 @@ class Subscription < ApplicationRecord
   belongs_to :user
   validates :user, uniqueness: true
 
+  def payment_method
+    user.default_source
+  end
+
   def trial_expiry
     @trial_expiry ||= created_at.advance(days: 7).end_of_day
   end

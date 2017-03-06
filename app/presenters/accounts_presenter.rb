@@ -35,10 +35,10 @@ class AccountsPresenter
   end
 
   def last_four
-    payment_method.last_four
+    payment_method.last4
   end
 
   def payment_method
-    @user.payment_method
+    @user.default_source
   end
 end

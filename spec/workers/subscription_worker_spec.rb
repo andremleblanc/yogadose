@@ -18,7 +18,7 @@ RSpec.describe SubscriptionWorker, type: :worker do
       it "updates user's Stripe::Customer record" do
         expect(User).to receive(:find).and_return(subscriber)
         expect(subscriber).to receive(:update_stripe).with(
-            default_source: token,
+            source: token,
             email: subscriber.email,
             plan: SubscriptionWorker::PLAN,
             trial_end: subscriber.subscription.trial_expiry.to_i

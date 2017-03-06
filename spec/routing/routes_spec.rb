@@ -10,4 +10,5 @@ RSpec.describe 'routes', type: :routing do
         })
   }
   it { expect(get('/change_password')).to route_to('users#change_password')}
+  it { expect(get('/subscriptions/1/edit')).not_to route_to('subscriptions#edit') }
 end

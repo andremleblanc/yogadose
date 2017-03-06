@@ -5,7 +5,7 @@ class SubscriptionWorker
   def perform(user_id, stripe_token)
     user = User.find(user_id)
     user.update_stripe(
-        default_source: stripe_token,
+        source: stripe_token,
         email: user.email,
         plan: PLAN,
         trial_end: user.subscription.trial_expiry.to_i

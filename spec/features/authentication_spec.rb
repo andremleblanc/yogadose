@@ -39,10 +39,10 @@ RSpec.feature 'Authentication', type: :feature, js: true do
       fill_in 'cvc', with: Faker::Number.number(3)
       fill_in 'postal', with: Faker::Number.number(5)
     end
-    click_on I18n.t('subscriptions.payment_info.subscribe')
+    click_on I18n.t('subscriptions.new.submit_label')
 
     expect(page).to have_current_path(account_path)
-    expect(User.find_by(email: alt_email).payment_method).to be
+    expect(User.find_by(email: alt_email).default_source).to be
 
     # Go to Account Settings
     click_on name
@@ -78,10 +78,10 @@ RSpec.feature 'Authentication', type: :feature, js: true do
       fill_in 'cvc', with: Faker::Number.number(3)
       fill_in 'postal', with: Faker::Number.number(5)
     end
-    click_on I18n.t('subscriptions.payment_info.subscribe')
+    click_on I18n.t('subscriptions.new.submit_label')
 
     expect(page).to have_current_path(account_path)
-    expect(User.find_by(email: email).payment_method).to be
+    expect(User.find_by(email: email).default_source).to be
 
     # Go to Account Settings
     click_on name

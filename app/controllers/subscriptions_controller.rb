@@ -29,8 +29,15 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-    subscription = Subscription.find(id: params[:id])
-    authorize subscription
+    subscription = current_user.subscription
+    if stripe_token.present?
+      flash[:success] = I18n.t('flash.subscription_updated')
+      SubscriptionWorker.perform_async(current_user.id, stripe_token)
+      redirect_to account_path
+    else
+      flash[:error] = I18n.t('flash.subscription_not_updated')
+      redirect_to edit_subscription_path
+    end
   end
 
   private

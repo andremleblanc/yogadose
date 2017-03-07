@@ -12,7 +12,7 @@ class AccountsPresenter
   end
 
   def payment_method?
-    payment_method
+    payment_method.present?
   end
 
   def payment_method_summary

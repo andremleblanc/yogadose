@@ -49,7 +49,9 @@ RSpec.feature 'Subscription', type: :feature, js: true do
     expect(page).to have_text '4242'
 
     # Delete
-    expect(true).to be false
-
+    within('.subscription') { click_on 'Cancel' }
+    page.accept_alert
+    expect(page).to have_current_path(account_path)
+    expect(page).to have_text 'Reactivate Your Subscription'
   end
 end

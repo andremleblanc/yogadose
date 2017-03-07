@@ -26,24 +26,6 @@ RSpec.describe Subscription, type: :model do
     let(:subscription) { create(:subscription) }
     let(:stripe_subscription) { double('Stripe::Subscription') }
 
-    describe '#active?' do
-      let(:result) { subscription.active? }
-
-      context 'when subscription is active' do
-        it 'returns true' do
-          expect(subscription).to receive(:stripe_subscription).at_least(1).and_return(stripe_subscription)
-          expect(result).to be true
-        end
-      end
-
-      context 'when subsctiption is cancelled' do
-        it 'returns false' do
-          expect(subscription).to receive(:stripe_subscription)
-          expect(result).to be false
-        end
-      end
-    end
-
     describe '#cancel_subscription' do
       let(:result) { subscription.cancel_subscription }
 
@@ -66,16 +48,32 @@ RSpec.describe Subscription, type: :model do
     describe '#status' do
       let(:result) { subscription.status }
 
-      context 'when subscription is active' do
-        it 'calls status on Stripe::Subscription' do
+      before do
+        allow(stripe_subscription).to receive(:status).and_return('foo')
+      end
+
+      context 'when Stripe::Subscription exists' do
+        before do
           expect(subscription).to receive(:stripe_subscription).at_least(1).and_return(stripe_subscription)
-          expect(stripe_subscription).to receive(:status)
-          result
+        end
+
+        context 'and not cancelled' do
+          it 'returns Stripe::Subscription status' do
+            expect(stripe_subscription).to receive(:canceled_at)
+            expect(result).to eq 'foo'
+          end
+        end
+
+        context 'but is cancelled' do
+          it 'returns Subscription::CANCELLING' do
+            expect(stripe_subscription).to receive(:canceled_at).and_return(Time.now.to_i)
+            expect(result).to eq Subscription::CANCELLING
+          end
         end
       end
 
-      context 'when subscription is cancelled' do
-        it 'returns cancelled' do
+      context 'when Stripe::Subscription does not exist' do
+        it 'returns Subscription::CANCELLED' do
           expect(subscription).to receive(:stripe_subscription)
           expect(result).to eq Subscription::CANCELLED
         end

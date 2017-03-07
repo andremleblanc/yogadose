@@ -1,12 +1,13 @@
 class Subscription < ApplicationRecord
+  CANCELLING = 'cancelling'.freeze
   CANCELLED = 'cancelled'.freeze
 
   belongs_to :user
   validates :user, uniqueness: true
 
-  def active?
-    stripe_subscription.present?
-  end
+  # def active?
+  #   stripe_subscription.present?
+  # end
 
   def cancel_subscription
     stripe_subscription ? stripe_subscription.delete(at_period_end: true) : nil
@@ -17,7 +18,8 @@ class Subscription < ApplicationRecord
   end
 
   def status
-    stripe_subscription ? stripe_subscription.status : CANCELLED #TODO: Cache, burst on period end
+    return CANCELLED unless stripe_subscription
+    stripe_subscription.canceled_at ? CANCELLING : stripe_subscription.status
   end
 
   def stripe_subscription

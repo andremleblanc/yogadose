@@ -26,31 +26,77 @@ RSpec.describe Subscription, type: :model do
     let(:subscription) { create(:subscription) }
     let(:stripe_subscription) { double('Stripe::Subscription') }
 
+    describe '#active?' do
+      let(:result) { subscription.active? }
+
+      context 'when subscription is active' do
+        it 'returns true' do
+          expect(subscription).to receive(:stripe_subscription).at_least(1).and_return(stripe_subscription)
+          expect(result).to be true
+        end
+      end
+
+      context 'when subsctiption is cancelled' do
+        it 'returns false' do
+          expect(subscription).to receive(:stripe_subscription)
+          expect(result).to be false
+        end
+      end
+    end
+
     describe '#cancel_subscription' do
       let(:result) { subscription.cancel_subscription }
 
-      it 'calls delete on Stripe::Subscription' do
-        expect(subscription).to receive(:stripe_subscription).and_return(stripe_subscription)
-        expect(stripe_subscription).to receive(:delete)
-        result
+      context 'when subscription is active' do
+        it 'calls delete on Stripe::Subscription' do
+          expect(subscription).to receive(:stripe_subscription).at_least(1).and_return(stripe_subscription)
+          expect(stripe_subscription).to receive(:delete)
+          result
+        end
+      end
+
+      context 'when subscription is cancelled' do
+        it 'does nothing' do
+          expect(subscription).to receive(:stripe_subscription)
+          result
+        end
       end
     end
 
     describe '#status' do
       let(:result) { subscription.status }
 
-      it 'calls status on Stripe::Subscription' do
-        expect(subscription).to receive(:stripe_subscription).and_return(stripe_subscription)
-        expect(stripe_subscription).to receive(:status)
-        result
+      context 'when subscription is active' do
+        it 'calls status on Stripe::Subscription' do
+          expect(subscription).to receive(:stripe_subscription).at_least(1).and_return(stripe_subscription)
+          expect(stripe_subscription).to receive(:status)
+          result
+        end
+      end
+
+      context 'when subscription is cancelled' do
+        it 'returns cancelled' do
+          expect(subscription).to receive(:stripe_subscription)
+          expect(result).to eq Subscription::CANCELLED
+        end
       end
     end
 
     describe '#stripe_subscription' do
-      it 'retrieves and memoizes subscription from stripe' do
-        expect(Stripe::Subscription).to receive(:retrieve).with(subscription.stripe_id).and_return(Object.new)
-        subscription.stripe_subscription
-        subscription.stripe_subscription
+      context 'when subscription is active' do
+        it 'retrieves and memoizes subscription from stripe' do
+          expect(Stripe::Subscription).to receive(:retrieve).with(subscription.stripe_id).and_return(Object.new)
+          subscription.stripe_subscription
+          subscription.stripe_subscription
+        end
+      end
+
+      context 'when subscription is cancelled' do
+        it 'retrieves and memoizes nil' do
+          expect(Stripe::Subscription).to receive(:retrieve).with(subscription.stripe_id).and_raise(Stripe::InvalidRequestError.new('blah', 'blah'))
+          subscription.stripe_subscription
+          subscription.stripe_subscription
+        end
       end
     end
 

@@ -1,13 +1,15 @@
 class Subscription < ApplicationRecord
+  CANCELLED = 'cancelled'.freeze
+
   belongs_to :user
   validates :user, uniqueness: true
 
   def active?
-    status != 'cancelled' && status !='canceled' #TODO: This doesn't work
+    stripe_subscription.present?
   end
 
   def cancel_subscription
-    stripe_subscription.delete(at_period_end: true)
+    stripe_subscription ? stripe_subscription.delete(at_period_end: true) : nil
   end
 
   def payment_method
@@ -15,11 +17,16 @@ class Subscription < ApplicationRecord
   end
 
   def status
-    stripe_subscription.status #TODO: Cache
+    stripe_subscription ? stripe_subscription.status : CANCELLED #TODO: Cache, burst on period end
   end
 
   def stripe_subscription
-    @stripe_subscription ||= Stripe::Subscription.retrieve(stripe_id) #TODO: Handle this raising an error
+    return @stripe_subscription if defined?(@stripe_subscription)
+    @stripe_subscription ||= begin
+      Stripe::Subscription.retrieve(stripe_id) #TODO: Handle this raising an error
+    rescue Stripe::InvalidRequestError
+      nil
+    end
   end
 
   def trial_expiry

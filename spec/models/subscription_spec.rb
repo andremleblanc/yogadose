@@ -45,6 +45,36 @@ RSpec.describe Subscription, type: :model do
       end
     end
 
+    describe '#next_charge' do
+      let(:result) { subscription.next_charge }
+
+      context 'when Stripe::Subscription exists' do
+        let(:time) { Time.now }
+
+        before do
+          expect(subscription).to receive(:stripe_subscription).at_least(1).and_return(stripe_subscription)
+        end
+
+        it 'is memoized' do
+          expect(stripe_subscription).to receive(:current_period_end).and_return(time.to_i)
+          subscription.next_charge
+          subscription.next_charge
+        end
+
+        it 'is equal to the beginning of day following end of period' do
+          expect(stripe_subscription).to receive(:current_period_end).and_return(time.to_i)
+          expect(result).to eq time.advance(days: 1).beginning_of_day
+        end
+      end
+
+      context 'when Stripe::Subscription does not exist' do
+        it 'returns nil' do
+          expect(subscription).to receive(:stripe_subscription)
+          expect(result).to be_nil
+        end
+      end
+    end
+
     describe '#status' do
       let(:result) { subscription.status }
 

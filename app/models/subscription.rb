@@ -5,12 +5,14 @@ class Subscription < ApplicationRecord
   belongs_to :user
   validates :user, uniqueness: true
 
-  # def active?
-  #   stripe_subscription.present?
-  # end
-
   def cancel_subscription
     stripe_subscription ? stripe_subscription.delete(at_period_end: true) : nil
+  end
+
+  def next_charge
+    @next_charge ||= stripe_subscription ?
+        Time.at(stripe_subscription.current_period_end).advance(days: 1).beginning_of_day :
+        nil
   end
 
   def payment_method

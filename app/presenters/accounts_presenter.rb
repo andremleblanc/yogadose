@@ -11,6 +11,10 @@ class AccountsPresenter
     @user.name
   end
 
+  def next_charge
+    subscription.next_charge.strftime('%m/%e/%y')
+  end
+
   def payment_method?
     payment_method.present?
   end
@@ -24,7 +28,22 @@ class AccountsPresenter
   end
 
   def active_subscription?
-    subscription.active?
+    [ Subscription::CANCELLED, Subscription::CANCELLING ].exclude? subscription.status
+  end
+
+  def status
+    subscription.status.titleize
+  end
+
+  def status_label
+    case subscription.status
+      when Subscription::CANCELLED
+        'label-danger'
+      when Subscription::CANCELLING
+        'label-warning'
+      else
+        'label-primary'
+    end
   end
 
   def subscription_path

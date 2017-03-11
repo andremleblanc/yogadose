@@ -57,13 +57,20 @@ RSpec.describe Subscription, type: :model do
 
         it 'is memoized' do
           expect(stripe_subscription).to receive(:current_period_end).and_return(time.to_i)
+          expect(subscription).to receive(:status).and_return('trailing')
           subscription.next_charge
           subscription.next_charge
         end
 
         it 'is equal to the beginning of day following end of period' do
           expect(stripe_subscription).to receive(:current_period_end).and_return(time.to_i)
+          expect(subscription).to receive(:status).and_return('trailing')
           expect(result).to eq time.advance(days: 1).beginning_of_day
+        end
+
+        it 'is nil if subscription is cancelling' do
+          expect(subscription).to receive(:status).and_return(Subscription::CANCELLED)
+          expect(result).to be_nil
         end
       end
 

@@ -10,7 +10,7 @@ class Subscription < ApplicationRecord
   end
 
   def next_charge
-    @next_charge ||= stripe_subscription ?
+    @next_charge ||= stripe_subscription && status != CANCELLED ?
         Time.at(stripe_subscription.current_period_end).advance(days: 1).beginning_of_day :
         nil
   end

@@ -41,7 +41,7 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     end
     click_on I18n.t('subscriptions.new.submit_label')
 
-    expect(page).to have_current_path(account_path)
+    expect(page).to have_current_path(dashboard_path)
     expect(User.find_by(email: alt_email).default_source).to be
 
     # Go to Account Settings
@@ -80,7 +80,7 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     end
     click_on I18n.t('subscriptions.new.submit_label')
 
-    expect(page).to have_current_path(account_path)
+    expect(page).to have_current_path(dashboard_path)
     expect(User.find_by(email: email).default_source).to be
 
     # Go to Account Settings

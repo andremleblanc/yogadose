@@ -157,10 +157,13 @@ header {
   float: right;
 }
 
-.label-primary {
-  background-color: $primary;
+.label {
   border-radius: 1em;
   font-weight: 300;
+}
+
+.label-primary {
+  background-color: $primary;
 }
 
 .label-sm {

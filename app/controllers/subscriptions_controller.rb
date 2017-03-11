@@ -9,7 +9,7 @@ class SubscriptionsController < ApplicationController
       if stripe_token.present? && create_subscription
         SubscriptionWorker.perform_async(current_user.id, stripe_token)
         flash[:success] = I18n.t('flash.subscription_success')
-        redirect_to account_path
+        redirect_to dashboard_path
       else
         # TODO: Record metric and log; improve error message
         flash[:error] = I18n.t('flash.subscription_error')

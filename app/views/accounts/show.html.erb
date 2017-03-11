@@ -1,19 +1,12 @@
 <div class="account">
   <div class="col-sm-6">
-    <section>
-      <h2>Your Next Charge</h2>
-      <div class="card">
-        <div class="inner">
-          <span class="date">02/04/2017</span><span class="pull-right price">$13.99</span>
-        </div>
-      </div>
-    </section>
-
     <section class="subscription">
       <h2>Your Subscription</h2>
+      <% if false %>
       <span class="header-link">
         <a href="#">View Billing History</a><%# TODO: fix link %>
       </span>
+      <% end %>
 
       <% if @presenter.payment_method? %>
           <div class="card">
@@ -21,9 +14,13 @@
               <h4><%= t('.your_plan') %></h4>
               <%# TODO: fix %>
               <div>
-                Yogadose Monthly <span class="label label-primary label-sm">Active</span>
+                Yogadose Monthly
+                <span class="label <%= @presenter.status_label %> label-sm"><%= @presenter.status %></span>
                 <span class="pull-right">$13.99/mo</span>
               </div>
+              <% if @presenter.next_charge %>
+                  <div>Next Charge<span class="pull-right"><%= @presenter.next_charge %></span></div>
+              <% end %>
             </div>
 
 
@@ -36,7 +33,7 @@
             <% if @presenter.active_subscription? %>
                 <div class="inner">
                   <h4>Cancel Your Subscription</h4>
-                  <span class="header-link"><%= link_to 'Cancel', subscription_path, method: :delete, data: { confirm: t('.cancel_subscription') } %></span>
+                  <span class="header-link"><%= link_to 'Cancel', subscription_path, method: :delete, data: {confirm: t('.cancel_subscription')} %></span>
                 </div>
             <% else %>
                 <div class="inner">

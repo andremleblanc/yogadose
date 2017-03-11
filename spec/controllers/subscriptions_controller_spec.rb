@@ -64,7 +64,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
           it 'redirects to account path' do
             post :create, params: params
-            expect(response).to redirect_to(account_path)
+            expect(response).to redirect_to(dashboard_path)
           end
 
           it 'has the correct flash message' do

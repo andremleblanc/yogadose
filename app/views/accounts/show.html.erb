@@ -18,9 +18,7 @@
                 <span class="label <%= @presenter.status_label %> label-sm"><%= @presenter.status %></span>
                 <span class="pull-right">$13.99/mo</span>
               </div>
-              <% if @presenter.next_charge %>
-                  <div>Next Charge<span class="pull-right"><%= @presenter.next_charge %></span></div>
-              <% end %>
+              <div>Next Charge<span class="pull-right"><%= @presenter.next_charge %></span></div>
             </div>
 
 

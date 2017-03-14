@@ -11,6 +11,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
 
   let(:user) { User.find_by(email: @email) }
   let(:name) { user.name }
+  let(:next_charge) { Time.now.advance(days: 9).strftime('%m/%e/%y') }
 
   it 'Allows create, edit, delete, and reactivate from account page' do
     sign_in
@@ -18,7 +19,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
     # Account Page
     visit account_path
     expect(page).to have_current_path(account_path)
-    expect(page).not_to have_text('Next Charge')
+    expect(page).not_to have_text(next_charge)
     click_on(I18n.t('accounts.show.sign_up'))
     expect(page).to have_current_path(new_subscription_path)
 
@@ -38,7 +39,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
 
     # Account Page
     expect(page).to have_current_path(account_path)
-    expect(page).to have_text('Next Charge')
+    expect(page).to have_text(next_charge)
     expect(user.default_source).to be
     within('.subscription') { click_on I18n.t('accounts.show.update') }
 
@@ -55,7 +56,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
     # Account Page
     expect(page).to have_current_path(account_path)
     expect(page).to have_text '4242'
-    expect(page).to have_text('Next Charge')
+    expect(page).to have_text(next_charge)
 
     # Delete
     within('.subscription') { click_on 'Cancel' }
@@ -63,7 +64,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
     expect(page).to have_current_path(account_path)
     expect(page).to have_text 'Reactivate Your Subscription'
     expect(page).to have_css('.subscription .label', text: 'Cancelling')
-    expect(page).not_to have_text('Next Charge')
+    expect(page).to have_text('No Pending Charge')
 
     # Reactivate
     click_on 'Reactivate'

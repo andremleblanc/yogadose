@@ -69,7 +69,7 @@ RSpec.describe Subscription, type: :model do
         end
 
         it 'is nil if subscription is cancelling' do
-          expect(subscription).to receive(:status).and_return(Subscription::CANCELLED)
+          expect(subscription).to receive(:status).and_return(Subscription::CANCELLING)
           expect(result).to be_nil
         end
       end

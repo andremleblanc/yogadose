@@ -28,7 +28,7 @@ class AccountsPresenter
   end
 
   def active_subscription?
-    [ Subscription::CANCELLED, Subscription::CANCELLING ].exclude? subscription.status
+    !subscription.cancelled?
   end
 
   def status

@@ -26,6 +26,90 @@ RSpec.describe Subscription, type: :model do
     let(:subscription) { create(:subscription) }
     let(:stripe_subscription) { double('Stripe::Subscription') }
 
+    describe '#activate' do
+      let(:user) { subscription.user }
+      let(:customer) { double('Stripe::Customer') }
+
+      before do
+        expect(user).to receive(:stripe_customer).and_return(customer)
+      end
+
+      context 'when Stripe::Subscription exists' do
+        before do
+          allow(subscription).to receive(:stripe_subscription).and_return(stripe_subscription)
+        end
+
+        context 'when subscription is active' do
+          it 'raises a standard error' do
+            expect(subscription).to receive(:status).and_return(:active)
+            expect { subscription.activate }.to raise_error(StandardError)
+          end
+        end
+
+        context 'when subscription is cancelling' do
+          it 'changes the status to active' do
+            expect(subscription).to receive(:status).and_return(Subscription::CANCELLING)
+            expect(stripe_subscription).to receive(:plan=).with(Subscription::PLAN)
+            expect(stripe_subscription).to receive(:save)
+            subscription.activate
+          end
+        end
+      end
+
+      context 'when Stripe::Subscription does not exist' do
+        before do
+          allow(subscription).to receive(:stripe_subscription)
+        end
+
+        context 'when Stripe::Customer does not exist' do
+          let(:customer) { nil }
+
+          it 'raises a standard error' do
+            expect { subscription.activate }.to raise_error(StandardError)
+          end
+        end
+
+        context 'when Stripe::Customer does exist' do
+          let(:stripe_subscription) { double('Stripe::Subscription') }
+
+          context 'and no current stripe_id' do
+            let(:subscription) { create(:subscription, stripe_id: nil) }
+
+            it 'updates the user with a plan' do
+              expect(subscription).to receive(:status).and_return(Subscription::CANCELLED)
+              expect(Stripe::Subscription).to receive(:create).
+                  with(
+                      plan: Subscription::PLAN,
+                      customer: user.stripe_id,
+                      trial_end: subscription.trial_expiry.to_i
+                  ).and_return(stripe_subscription)
+              expect(stripe_subscription).to receive(:id).and_return('sub_1234')
+
+              expect(subscription.stripe_id).to be_nil
+              subscription.activate
+              expect(subscription.stripe_id).to be
+            end
+          end
+
+          context 'and current stripe_id' do
+            let(:subscription) { create(:subscription, stripe_id: 'sub_1234') }
+
+            it 'updates the user with a plan' do
+              expect(subscription).to receive(:status).and_return(Subscription::CANCELLED)
+              expect(Stripe::Subscription).to receive(:create).
+                  with(
+                      plan: Subscription::PLAN,
+                      customer: user.stripe_id,
+                      trial_end: subscription.trial_expiry.to_i
+                  ).and_return(stripe_subscription)
+              expect(stripe_subscription).to receive(:id).and_return('sub_12345')
+              expect { subscription.activate }.to change { subscription.stripe_id }
+            end
+          end
+        end
+      end
+    end
+
     describe '#cancel_subscription' do
       let(:result) { subscription.cancel_subscription }
 
@@ -52,7 +136,7 @@ RSpec.describe Subscription, type: :model do
         let(:time) { Time.now }
 
         before do
-          expect(subscription).to receive(:stripe_subscription).at_least(1).and_return(stripe_subscription)
+          expect(subscription).to receive(:stripe_subscription).at_least(:once).and_return(stripe_subscription)
         end
 
         it 'is memoized' do

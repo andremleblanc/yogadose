@@ -1,13 +1,48 @@
 class Subscription < ApplicationRecord
   CANCELLING = 'cancelling'.freeze
   CANCELLED = 'cancelled'.freeze
+  PLAN = 'standard'.freeze
 
   belongs_to :user
   validates :user, uniqueness: true
 
+  # TODO: Simplify status logic
+  # inactive? = cancelled or new
+  # cancelling? = will cancel at end of cycle
+  # active? = not inactive or cancelling
+  # use these in activate
+
+  def activate
+    raise StandardError if user.stripe_customer.blank?
+
+    case status
+      when CANCELLING
+        stripe_subscription.plan = PLAN
+        stripe_subscription.save
+      when CANCELLED
+        sub = Stripe::Subscription.create(
+            customer: user.stripe_id,
+            plan: PLAN,
+            trial_end: trial_expiry.to_i
+        )
+        update!(stripe_id: sub.id)
+      else
+        raise StandardError
+    end
+  end
+
   def cancel_subscription
     stripe_subscription ? stripe_subscription.delete(at_period_end: true) : nil
   end
+
+  def active?
+    !cancelled?
+  end
+
+  def cancelled?
+    [CANCELLED, CANCELLING].include? status
+  end
+  alias_method :inactive?, :cancelled?
 
   def next_charge
     @next_charge ||= stripe_subscription && status != CANCELLING ?

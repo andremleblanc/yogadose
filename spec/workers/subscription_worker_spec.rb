@@ -11,6 +11,7 @@ RSpec.describe SubscriptionWorker, type: :worker do
 
   subject { SubscriptionWorker }
   let(:subscriber) { create(:subscriber, stripe_id: nil) }
+  let(:subscription) { subscriber.subscription }
   let(:token) { 'tok_1234' }
 
   describe '#perform_async' do
@@ -20,15 +21,10 @@ RSpec.describe SubscriptionWorker, type: :worker do
 
       it "updates user's Stripe::Customer record" do
         expect(User).to receive(:find).and_return(subscriber)
-        expect(subscriber).to receive(:update_stripe).with(
-            source: token,
-            email: subscriber.email,
-            plan: SubscriptionWorker::PLAN,
-            trial_end: subscriber.subscription.trial_expiry.to_i
-        )
-        expect_any_instance_of(subject).to receive(:parse_subscription_id).and_return(stripe_subscription_id)
+        expect(subscriber).to receive(:update_stripe).with(source: token, email: subscriber.email)
+        expect(subscription).to receive(:activate)
+        expect(subscription).to receive(:inactive?).and_return(true)
         subject.perform_async(subscriber.id, token)
-        expect(subscriber.subscription.stripe_id).to eq stripe_subscription_id
       end
     end
   end

@@ -24,7 +24,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
     expect(page).to have_current_path(new_subscription_path)
 
     # Create
-    within_frame('stripeField_card_element0') do
+    within_frame 0 do
       fill_in 'cardnumber', with: '4000000000000077'
       fill_in 'exp-date', with: '2' + Time.now.advance(years: 1).strftime('%y')
       fill_in 'cvc', with: Faker::Number.number(3)
@@ -45,7 +45,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
 
     # Update
     expect(page).to have_current_path(edit_subscription_path)
-    within_frame('stripeField_card_element0') do
+    within_frame 0 do
       fill_in 'cardnumber', with: '4242424242424242'
       fill_in 'exp-date', with: '2' + Time.now.advance(years: 1).strftime('%y')
       fill_in 'cvc', with: Faker::Number.number(3)

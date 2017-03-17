@@ -33,6 +33,9 @@ class SubscriptionsController < ApplicationController
       flash[:success] = I18n.t('flash.subscription_updated')
       SubscriptionWorker.perform_async(current_user.id, stripe_token)
       redirect_to account_path
+    elsif reactivate_subscription
+      flash[:success] = I18n.t('flash.subscription_reactivated')
+      redirect_to account_path
     else
       flash[:error] = I18n.t('flash.subscription_not_updated')
       redirect_to edit_subscription_path
@@ -53,6 +56,10 @@ class SubscriptionsController < ApplicationController
 
   def create_subscription
     current_user.create_subscription
+  end
+
+  def reactivate_subscription
+    current_user.subscription.activate
   end
 
   def stripe_token

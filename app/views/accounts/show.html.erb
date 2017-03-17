@@ -36,7 +36,7 @@
             <% else %>
                 <div class="inner">
                   <h4>Reactivate Your Subscription</h4>
-                  <span class="header-link"><%= link_to 'Reactivate', new_subscription_path %></span>
+                  <span class="header-link"><%= link_to 'Reactivate', new_subscription_path, method: :put %></span>
                 </div>
             <% end %>
           </div>

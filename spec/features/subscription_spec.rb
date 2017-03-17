@@ -68,6 +68,7 @@ RSpec.feature 'Subscription', type: :feature, js: true do
 
     # Reactivate
     click_on 'Reactivate'
-    expect(true).to be false
+    expect(page).to have_current_path(account_path)
+    expect(page).to have_text(I18n.t('flash.subscription_reactivated'))
   end
 end

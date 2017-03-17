@@ -197,10 +197,28 @@ RSpec.describe SubscriptionsController, type: :controller do
       let(:user) { create(:subscriber) }
 
       context 'without stripe token' do
-        it 'redirects to edit subscription path' do
-          patch :update, params: { id: 1 }
-          expect(response).to redirect_to(edit_subscription_path)
-          expect(flash[:error]).to match I18n.t('flash.subscription_not_updated')
+        context 'when activate returns true' do
+          before do
+            expect(subject).to receive(:reactivate_subscription).and_return(true)
+          end
+
+          it 'redirects to edit subscription path' do
+            patch :update, params: { id: 1 }
+            expect(response).to redirect_to(account_path)
+            expect(flash[:success]).to match I18n.t('flash.subscription_reactivated')
+          end
+        end
+
+        context 'when activate returns false' do
+          before do
+            expect(subject).to receive(:reactivate_subscription).and_return(false)
+          end
+
+          it 'redirects to edit subscription path' do
+            patch :update, params: { id: 1 }
+            expect(response).to redirect_to(edit_subscription_path)
+            expect(flash[:error]).to match I18n.t('flash.subscription_not_updated')
+          end
         end
       end
 

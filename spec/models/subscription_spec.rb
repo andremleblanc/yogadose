@@ -42,7 +42,7 @@ RSpec.describe Subscription, type: :model do
         context 'when subscription is active' do
           it 'raises a standard error' do
             expect(subscription).to receive(:status).and_return(:active)
-            expect { subscription.activate }.to raise_error(StandardError)
+            expect(subscription.activate).to be false
           end
         end
 
@@ -51,7 +51,7 @@ RSpec.describe Subscription, type: :model do
             expect(subscription).to receive(:status).and_return(Subscription::CANCELLING)
             expect(stripe_subscription).to receive(:plan=).with(Subscription::PLAN)
             expect(stripe_subscription).to receive(:save)
-            subscription.activate
+            expect(subscription.activate).to be true
           end
         end
       end
@@ -65,7 +65,7 @@ RSpec.describe Subscription, type: :model do
           let(:customer) { nil }
 
           it 'raises a standard error' do
-            expect { subscription.activate }.to raise_error(StandardError)
+            expect(subscription.activate).to be false
           end
         end
 
@@ -86,7 +86,7 @@ RSpec.describe Subscription, type: :model do
               expect(stripe_subscription).to receive(:id).and_return('sub_1234')
 
               expect(subscription.stripe_id).to be_nil
-              subscription.activate
+              expect(subscription.activate).to be true
               expect(subscription.stripe_id).to be
             end
           end

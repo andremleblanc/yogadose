@@ -11,9 +11,8 @@ class Subscription < ApplicationRecord
   # cancelling? = will cancel at end of cycle
   # active? = not inactive or cancelling
   # use these in activate
-
   def activate
-    raise StandardError if user.stripe_customer.blank?
+    return false if user.stripe_customer.blank?
 
     case status
       when CANCELLING
@@ -27,8 +26,10 @@ class Subscription < ApplicationRecord
         )
         update!(stripe_id: sub.id)
       else
-        raise StandardError
+        return false
     end
+
+    true
   end
 
   def cancel_subscription

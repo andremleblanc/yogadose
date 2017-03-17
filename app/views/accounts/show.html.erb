@@ -66,10 +66,12 @@
           <div><%= @presenter.email %></div>
         </div>
 
-        <div class="inner">
-          <h4 style="margin-bottom: 0px">Connect To Facebook</h4>
-          <span class="header-link"><%= link_to 'Connect', user_facebook_omniauth_authorize_path, id: 'connect-facebook-account' %></span>
-        </div>
+        <% unless @presenter.connected_to_facebook? %>
+            <div class="inner">
+              <h4 style="margin-bottom: 0px">Connect To Facebook</h4>
+              <span class="header-link"><%= link_to 'Connect', user_facebook_omniauth_authorize_path, id: 'connect-facebook-account' %></span>
+            </div>
+        <% end %>
 
         <div class="inner">
           <h4>Password</h4>
@@ -78,11 +80,13 @@
           <div>********</div>
         </div>
 
-        <div class="inner">
-          <h4>Privacy and Settings</h4>
-          <p><a href="#">Manage Email Notifications</a></p>
-          <p style="margin-bottom: 0"><a href="#">View Terms of Use</a></p>
-        </div>
+        <% if false %>
+            <div class="inner">
+              <h4>Privacy and Settings</h4>
+              <p><a href="#">Manage Email Notifications</a></p>
+              <p style="margin-bottom: 0"><a href="#">View Terms of Use</a></p>
+            </div>
+        <% end %>
       </div>
     </section>
   </div>

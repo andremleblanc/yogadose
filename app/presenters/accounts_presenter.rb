@@ -3,6 +3,10 @@ class AccountsPresenter
     @user = user
   end
 
+  def connected_to_facebook?
+    @user.provider && @user.uid
+  end
+
   def email
     @user.email
   end

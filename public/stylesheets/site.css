@@ -1,0 +1,167 @@
+/* line 4, _index.scss */
+#mc_embed_signup .indicates-required {
+  text-align: left; }
+
+@media (max-width: 767px) {
+  /* line 9, _index.scss */
+  .index {
+    text-align: center; }
+    /* line 13, _index.scss */
+    .index h1 {
+      text-align: center; }
+    /* line 17, _index.scss */
+    .index .pre-header {
+      text-align: center; }
+    /* line 21, _index.scss */
+    .index .post-header {
+      text-align: center; } }
+/* line 26, _index.scss */
+.index > section {
+  padding: 0 5%; }
+  /* line 29, _index.scss */
+  .index > section:last-of-type > .row {
+    padding: 70px 15px 0; }
+  /* line 31, _index.scss */
+  .index > section h1 {
+    color: white;
+    font-size: 38px;
+    margin-top: 0;
+    text-shadow: 1px 1px 1px black; }
+  /* line 38, _index.scss */
+  .index > section > .row {
+    padding: 170px 15px; }
+  /* line 40, _index.scss */
+  .index > section .pre-header {
+    font-family: "Myriad Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 600; }
+  /* line 45, _index.scss */
+  .index > section .post-header {
+    font-family: "Myriad Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: 400; }
+/* line 53, _index.scss */
+.index .intro {
+  background: url("https://images.yogadose.xyz/daily-yoga-workout.jpg"), no-repeat, fixed;
+  background-position: center 20%;
+  background-size: cover;
+  color: white;
+  position: relative; }
+  /* line 60, _index.scss */
+  .index .intro:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; }
+    @media (max-width: 767px) {
+      /* line 60, _index.scss */
+      .index .intro:before {
+        background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7) 60%); } }
+    @media (min-width: 768px) and (max-width: 991px) {
+      /* line 60, _index.scss */
+      .index .intro:before {
+        background-image: linear-gradient(to bottom right, transparent, rgba(0, 0, 0, 0.4) 20%, rgba(0, 0, 0, 0.7) 60%); } }
+    @media (min-width: 992px) {
+      /* line 60, _index.scss */
+      .index .intro:before {
+        background-image: linear-gradient(to bottom right, transparent 30%, rgba(0, 0, 0, 0.7) 60%); } }
+  /* line 79, _index.scss */
+  .index .intro .control-label {
+    font-size: 16px;
+    font-weight: 400;
+    text-shadow: 1px 1px 1px black; }
+  /* line 86, _index.scss */
+  .index .intro .signup .subtitle {
+    font-size: 12px; }
+/* line 92, _index.scss */
+.index .mission {
+  background: url("https://images.yogadose.xyz/be-well-do-well.jpg"), no-repeat, fixed;
+  background-position: center 20%;
+  background-size: cover;
+  color: white;
+  position: relative;
+  text-align: left; }
+  /* line 100, _index.scss */
+  .index .mission:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; }
+    @media (max-width: 767px) {
+      /* line 100, _index.scss */
+      .index .mission:before {
+        background-image: linear-gradient(to bottom left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7) 60%); } }
+    @media (min-width: 768px) and (max-width: 991px) {
+      /* line 100, _index.scss */
+      .index .mission:before {
+        background-image: linear-gradient(to bottom left, transparent, rgba(0, 0, 0, 0.4) 20%, rgba(0, 0, 0, 0.7) 60%); } }
+    @media (min-width: 992px) {
+      /* line 100, _index.scss */
+      .index .mission:before {
+        background-image: linear-gradient(to bottom left, transparent 30%, rgba(0, 0, 0, 0.7) 60%); } }
+/* line 120, _index.scss */
+.index .product {
+  color: black;
+  position: relative;
+  text-align: center; }
+  /* line 125, _index.scss */
+  .index .product h1 {
+    color: black;
+    margin-bottom: 0;
+    text-shadow: none; }
+  /* line 131, _index.scss */
+  .index .product img {
+    max-height: 500px;
+    max-width: 100%; }
+
+@media (max-width: 767px) {
+  /* line 6, site.css.scss */
+  .except-mobile {
+    display: none; } }
+/* line 9, site.css.scss */
+body {
+  text-align: center;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px; }
+
+/* line 17, site.css.scss */
+h1 {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1.8em;
+  font-weight: bold; }
+
+/* line 23, site.css.scss */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Myriad Pro", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+/* line 27, site.css.scss */
+footer {
+  background-color: black;
+  color: #ddd;
+  font-size: 0.8em;
+  padding: 20px 5%; }
+
+/* line 34, site.css.scss */
+.navbar {
+  border: 0px;
+  margin-bottom: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10; }
+
+/* line 43, site.css.scss */
+.navbar-brand {
+  height: 70px; }
+  /* line 46, site.css.scss */
+  .navbar-brand img {
+    height: 100%; }
+
+/* line 49, site.css.scss */
+.subtext {
+  font-size: 0.7em;
+  line-height: 1.5em; }

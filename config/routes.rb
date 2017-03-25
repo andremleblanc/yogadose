@@ -25,5 +25,5 @@ Rails.application.routes.draw do
   end
 
   # Unauthenticated Root
-  root to: redirect('/temp.html')
+  root to: redirect('/welcome.html')
 end

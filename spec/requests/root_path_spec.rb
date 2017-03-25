@@ -13,7 +13,7 @@ RSpec.describe 'Root path', type: :request do
   context 'when not logged in' do
     it 'redirects to home page' do
       get root_path
-      expect(response).to redirect_to('/temp.html')
+      expect(response).to redirect_to('/welcome.html')
     end
   end
 end

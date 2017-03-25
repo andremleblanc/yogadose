@@ -57,24 +57,27 @@ RSpec.describe SubscriptionsController, type: :controller do
         context 'and subscription is valid' do
           it 'create the subscription' do
             expect(user.subscription).to be nil
+            expect(subject).to receive(:activate_subscription)
             expect { post :create, params: params }.to change { Subscription.count }.by(1)
             user.reload
             expect(user.subscription).to be_a Subscription
           end
 
           it 'redirects to account path' do
+            expect(subject).to receive(:activate_subscription)
             post :create, params: params
             expect(response).to redirect_to(dashboard_path)
           end
 
           it 'has the correct flash message' do
+            expect(subject).to receive(:activate_subscription)
             post :create, params: params
             expect(flash[:success]).to match I18n.t('flash.subscription_success')
           end
 
-          it 'schedules a job' do
-            expect { post :create, params: params }.to change{ SubscriptionWorker.jobs.size }.by(1)
-          end
+          # it 'schedules a job' do
+          #   expect { post :create, params: params }.to change{ SubscriptionWorker.jobs.size }.by(1)
+          # end
         end
 
         context 'and subscription is not valid' do
@@ -225,12 +228,12 @@ RSpec.describe SubscriptionsController, type: :controller do
       context 'with stripe token' do
         let(:token) { Faker::Lorem.characters(20) }
 
-        it 'calls SubscriptionWorker' do
-          expect(SubscriptionWorker).to receive(:perform_async).with(user.id, token)
-          patch :update, params: { id: user.subscription.id, stripeToken: token }
-          expect(response).to redirect_to(account_path)
-          expect(flash[:success]).to match I18n.t('flash.subscription_updated')
-        end
+        # it 'calls SubscriptionWorker' do
+        #   expect(SubscriptionWorker).to receive(:perform_async).with(user.id, token)
+        #   patch :update, params: { id: user.subscription.id, stripeToken: token }
+        #   expect(response).to redirect_to(account_path)
+        #   expect(flash[:success]).to match I18n.t('flash.subscription_updated')
+        # end
       end
     end
   end

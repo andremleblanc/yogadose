@@ -2,16 +2,11 @@ require 'rails_helper'
 
 RSpec.feature 'Authentication', type: :feature, js: true do
   before do
-    Sidekiq::Testing.inline!
     OmniAuth.config.test_mode = true
     OmniAuth.config.add_mock(:facebook, {
         uid: Faker::Number.number(5),
         info: { email: email, name: name }
     })
-  end
-
-  after do
-    Sidekiq::Testing.fake!
   end
 
   let(:email) { Faker::Internet.email }

@@ -14,9 +14,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
-gem 'omniauth-google-oauth2'
 gem 'pundit'
-gem 'sidekiq'
 gem 'stripe'
 # gem 'capistrano-rails', group: :development
 

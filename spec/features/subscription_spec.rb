@@ -1,17 +1,9 @@
 require 'rails_helper'
 
 RSpec.feature 'Subscription', type: :feature, js: true do
-  before do
-    Sidekiq::Testing.inline!
-  end
-
-  after do
-    Sidekiq::Testing.fake!
-  end
-
   let(:user) { User.find_by(email: @email) }
   let(:name) { user.name }
-  let(:next_charge) { Time.now.advance(days: 9).strftime('%m/%e/%y') }
+  let(:next_charge) { Time.now.advance(days: 8).strftime('%m/%d/%y') }
 
   it 'Allows create, edit, delete, and reactivate from account page' do
     sign_in

@@ -16,7 +16,7 @@ class AccountsPresenter
   end
 
   def next_charge
-    subscription.next_charge ? subscription.next_charge.strftime('%m/%e/%y') : 'No Pending Charge'
+    subscription.next_charge ? subscription.next_charge.strftime('%m/%d/%y') : 'No Pending Charge'
   end
 
   def payment_method?

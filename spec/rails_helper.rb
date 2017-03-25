@@ -5,13 +5,10 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rspec'
-require 'sidekiq/testing'
 require 'vcr'
 
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
-
-Sidekiq::Testing.fake!
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false

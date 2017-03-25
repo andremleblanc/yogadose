@@ -7,7 +7,7 @@ class SubscriptionsController < ApplicationController
   def create
     if current_user.subscription.blank?
       if stripe_token.present? && create_subscription
-        SubscriptionWorker.perform_async(current_user.id, stripe_token)
+        activate_subscription
         flash[:success] = I18n.t('flash.subscription_success')
         redirect_to dashboard_path
       else
@@ -31,7 +31,7 @@ class SubscriptionsController < ApplicationController
   def update
     if stripe_token.present?
       flash[:success] = I18n.t('flash.subscription_updated')
-      SubscriptionWorker.perform_async(current_user.id, stripe_token)
+      activate_subscription
       redirect_to account_path
     elsif reactivate_subscription
       flash[:success] = I18n.t('flash.subscription_reactivated')
@@ -49,6 +49,11 @@ class SubscriptionsController < ApplicationController
   end
 
   private
+
+  def activate_subscription
+    current_user.update_stripe(source: stripe_token, email: current_user.email)
+    current_user.subscription.activate if current_user.subscription.inactive?
+  end
 
   def cancel_subscription
     current_user.subscription.cancel_subscription

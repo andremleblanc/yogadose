@@ -42,7 +42,7 @@
     font-weight: 400; }
 /* line 53, _index.scss */
 .index .intro {
-  background: url("https://images.yogadose.xyz/daily-yoga-workout.jpg"), no-repeat, fixed;
+  background: url("https://s3.amazonaws.com/yogadose/images/daily-yoga-workout.jpg"), no-repeat, fixed;
   background-position: center 20%;
   background-size: cover;
   color: white;
@@ -77,7 +77,7 @@
     font-size: 12px; }
 /* line 92, _index.scss */
 .index .mission {
-  background: url("https://images.yogadose.xyz/be-well-do-well.jpg"), no-repeat, fixed;
+  background: url("https://s3.amazonaws.com/yogadose/images/be-well-do-well.jpg"), no-repeat, fixed;
   background-position: center 20%;
   background-size: cover;
   color: white;

@@ -16,7 +16,6 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'pundit'
 gem 'stripe'
-# gem 'capistrano-rails', group: :development
 
 group :development, :test do
   gem 'byebug', platform: :mri

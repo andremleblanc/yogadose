@@ -1,0 +1,99 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_AMuXPSWyyZ5yJB
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.57.1
+      Authorization:
+      - Bearer sk_test_uGgeLv9tiR6pziNZhS6G2jGw
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.57.1","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Andres-AC-MBP.local 16.4.0 Darwin Kernel Version 16.4.0: Thu Dec 22 22:53:21
+        PST 2016; root:xnu-3789.41.3~3/RELEASE_X86_64 x86_64","hostname":"Andres-AC-MBP.local"}'
+      Host:
+      - api.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 29 Mar 2017 02:30:33 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '819'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_ANH8VCSY3lGuy9
+      Stripe-Version:
+      - '2014-06-17'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "cus_AMuXPSWyyZ5yJB",
+          "object": "customer",
+          "account_balance": 0,
+          "cards": {
+            "object": "list",
+            "data": [],
+            "has_more": false,
+            "total_count": 0,
+            "url": "/v1/customers/cus_AMuXPSWyyZ5yJB/cards"
+          },
+          "created": 1490670570,
+          "currency": null,
+          "default_card": null,
+          "default_source": null,
+          "delinquent": false,
+          "description": null,
+          "discount": null,
+          "email": "khalid_goldner@brakus.co",
+          "livemode": false,
+          "metadata": {},
+          "shipping": null,
+          "sources": {
+            "object": "list",
+            "data": [],
+            "has_more": false,
+            "total_count": 0,
+            "url": "/v1/customers/cus_AMuXPSWyyZ5yJB/sources"
+          },
+          "subscriptions": {
+            "object": "list",
+            "data": [],
+            "has_more": false,
+            "total_count": 0,
+            "url": "/v1/customers/cus_AMuXPSWyyZ5yJB/subscriptions"
+          }
+        }
+    http_version: 
+  recorded_at: Wed, 29 Mar 2017 02:30:33 GMT
+recorded_with: VCR 3.0.3

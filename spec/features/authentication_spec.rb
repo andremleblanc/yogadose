@@ -25,7 +25,7 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     fill_in I18n.t('devise.registrations.new.password'), with: password
     fill_in I18n.t('devise.registrations.new.password_confirmation'), with: password
     click_on 'Sign Up'
-    expect(page).to have_current_path(new_subscription_path)
+    expect(page).to have_current_path(subscription_path)
 
     # Subscription Settings
     within_frame 0 do
@@ -37,7 +37,6 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     click_on I18n.t('subscriptions.new.submit_label')
 
     expect(page).to have_current_path(dashboard_path)
-    expect(User.find_by(email: alt_email).default_source).to be
 
     # Go to Account Settings
     click_on name
@@ -55,7 +54,6 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     expect(page).to have_current_path(new_user_session_path)
 
     # Login
-    expect_any_instance_of(User).to receive(:active?).and_return(true) #TODO: remove this stub
     click_on I18n.t('devise.sessions.new.facebook_authentication')
     expect(page).to have_current_path(dashboard_path)
   end
@@ -64,7 +62,7 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     # Sign Up and Login
     visit new_user_session_path
     click_on I18n.t('devise.sessions.new.facebook_authentication')
-    expect(page).to have_current_path(new_subscription_path)
+    expect(page).to have_current_path(subscription_path)
 
     # Subscription Settings
     within_frame 0 do
@@ -76,7 +74,6 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     click_on I18n.t('subscriptions.new.submit_label')
 
     expect(page).to have_current_path(dashboard_path)
-    expect(User.find_by(email: email).default_source).to be
 
     # Go to Account Settings
     click_on name
@@ -99,7 +96,6 @@ RSpec.feature 'Authentication', type: :feature, js: true do
     expect(page).to have_current_path(new_user_session_path)
 
     # Login
-    expect_any_instance_of(User).to receive(:active?).and_return(true) #TODO: remove this stub
     visit new_user_session_path
     fill_in I18n.t('devise.registrations.new.email'), with: email
     fill_in I18n.t('devise.registrations.new.password'), with: new_password

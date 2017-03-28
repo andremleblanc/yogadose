@@ -1,5 +1,6 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  #TODO: Clean / refactor
+  skip_before_action :verify_active
+  
   def facebook
     auth = request.env['omniauth.auth']
 
@@ -15,8 +16,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       @user = User.from_omniauth(auth)
       if @user.persisted?
-        sign_in_and_redirect @user, :event => :authentication
-        set_flash_message(:notice, :success, :kind => 'Facebook') if is_navigational_format?
+        set_flash_message(:notice, :success, kind: 'Facebook') if is_navigational_format?
+        sign_in_and_redirect @user, event: :authentication
       else
         #TODO: Metric / Log
         flash[:error] = I18n.t('flash.facebook_error')

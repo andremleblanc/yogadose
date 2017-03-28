@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cdn.jwplayer.com/v2/playlists/lnBWhBPe
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - cdn.jwplayer.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '603'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET, POST, PUT
+      Access-Control-Allow-Origin:
+      - "*"
+      Date:
+      - Sun, 02 Apr 2017 04:39:35 GMT
+      Server:
+      - openresty
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 fb0d1e77a72640dba217c0cdc9b92e00.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - rCcwlDRg5wXgjAre5a_ISL2ZDWIzJuo6X-F8GG7KXh28h3ljdpVRbw==
+    body:
+      encoding: ASCII-8BIT
+      string: '{"playlist":[{"mediaid":"2VuODq13","description":"Umm....how to press
+        handstand.","pubdate":1490064291,"title":"How to Press Handstand","image":"https:\/\/cdn.jwplayer.com\/thumbs\/2VuODq13-720.jpg","feedid":"lnBWhBPe","sources":[{"width":480,"type":"application\/vnd.apple.mpegurl","file":"https:\/\/cdn.jwplayer.com\/manifests\/2VuODq13.m3u8","height":480},{"width":320,"type":"video\/mp4","file":"https:\/\/cdn.jwplayer.com\/videos\/2VuODq13-oqKkzYY9.mp4","height":320},{"width":480,"type":"video\/mp4","file":"https:\/\/cdn.jwplayer.com\/videos\/2VuODq13-ZAAaQvub.mp4","height":480},{"type":"audio\/mp4","file":"https:\/\/cdn.jwplayer.com\/videos\/2VuODq13-oBPSQOLl.m4a"}],"tracks":[{"kind":"thumbnails","file":"https:\/\/cdn.jwplayer.com\/strips\/2VuODq13-120.vtt"}],"link":"https:\/\/cdn.jwplayer.com\/previews\/2VuODq13","duration":59},{"mediaid":"kKrXMOeF","description":"In
+        the yoga flow...we kick butt!","pubdate":1490064291,"title":"Ninja Workout","image":"https:\/\/cdn.jwplayer.com\/thumbs\/kKrXMOeF-720.jpg","feedid":"lnBWhBPe","sources":[{"width":640,"type":"application\/vnd.apple.mpegurl","file":"https:\/\/cdn.jwplayer.com\/manifests\/kKrXMOeF.m3u8","height":640},{"width":320,"type":"video\/mp4","file":"https:\/\/cdn.jwplayer.com\/videos\/kKrXMOeF-oqKkzYY9.mp4","height":320},{"width":480,"type":"video\/mp4","file":"https:\/\/cdn.jwplayer.com\/videos\/kKrXMOeF-ZAAaQvub.mp4","height":480},{"type":"audio\/mp4","file":"https:\/\/cdn.jwplayer.com\/videos\/kKrXMOeF-oBPSQOLl.m4a"}],"tracks":[{"kind":"thumbnails","file":"https:\/\/cdn.jwplayer.com\/strips\/kKrXMOeF-120.vtt"}],"link":"https:\/\/cdn.jwplayer.com\/previews\/kKrXMOeF","duration":60}],"description":"","links":{"last":"https:\/\/cdn.jwplayer.com\/v2\/playlists\/lnBWhBPe?page_offset=1&page_limit=10","first":"https:\/\/cdn.jwplayer.com\/v2\/playlists\/lnBWhBPe?page_offset=1&page_limit=10"},"title":"Main","feed_instance_id":"8e8b927f-4d97-4902-a7af-a88fab33defc","feedid":"lnBWhBPe","kind":"DYNAMIC"}'
+    http_version: 
+  recorded_at: Sun, 02 Apr 2017 04:39:35 GMT
+recorded_with: VCR 3.0.3

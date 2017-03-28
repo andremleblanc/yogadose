@@ -47,3 +47,6 @@ en:
       zipcode: Zipcode
     new:
       submit_label: Add Payment Method
+    reactivate:
+      already_active: Your account is already active.
+      success: Subscription reactivated successfully! Welcome back.

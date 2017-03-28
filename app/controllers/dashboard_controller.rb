@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
   def show
-    @media = JSON.parse(Net::HTTP.get(URI('https://cdn.jwplayer.com/v2/playlists/lnBWhBPe')))['playlist']; # TODO: Cache and AJAX
+    # TODO: Cache and AJAX
+    @media = JSON.parse(Net::HTTP.get(URI('https://cdn.jwplayer.com/v2/playlists/lnBWhBPe')))['playlist'];
   end
 end

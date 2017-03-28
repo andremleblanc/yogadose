@@ -19,7 +19,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
-    #TODO: Handle update / metric
+    #TODO: Metric / Log
     current_user.update!(update_params)
     flash[:notice] = 'Account updated.'
     redirect_to account_path
@@ -53,7 +53,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    new_subscription_path
+    subscription_path
   end
 
   # The path used after sign up for inactive accounts.

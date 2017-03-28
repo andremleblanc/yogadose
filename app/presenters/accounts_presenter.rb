@@ -32,26 +32,33 @@ class AccountsPresenter
   end
 
   def active_subscription?
-    !subscription.cancelled?
+    subscription.active?
+  end
+
+  def cancelling_subscription?
+    subscription.cancelling?
   end
 
   def status
-    subscription.status.titleize
+    if subscription.cancelling?
+      'Cancelling'
+    else
+      subscription.status.titleize
+    end
   end
 
   def status_label
-    case subscription.status
-      when Subscription::CANCELLED
-        'label-danger'
-      when Subscription::CANCELLING
-        'label-warning'
-      else
-        'label-primary'
+    if subscription.inactive?
+      'label-danger'
+    elsif subscription.cancelling?
+      'label-warning'
+    else
+      'label-primary'
     end
   end
 
   def subscription_path
-    subscription ? edit_subscription_path(subscription) : new_subscription_path
+    subscription_path
   end
 
   private
@@ -69,6 +76,6 @@ class AccountsPresenter
   end
 
   def payment_method
-    @user.default_source
+    @user.source
   end
 end

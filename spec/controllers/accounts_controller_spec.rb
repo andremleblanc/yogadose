@@ -11,31 +11,25 @@ RSpec.describe AccountsController, type: :controller do
 
     context 'authenticated' do
       let(:subscriber) { create(:subscriber) }
-      let(:admin) { create(:admin) }
 
       context 'accessing another user' do
         let(:another_user) { create(:subscriber) }
+        let(:user) { subscriber }
 
-        context 'as a subscriber' do
-          it 'redirects to dashboard path' do
-            sign_in(subscriber)
-            get :show, params: { id: another_user.id }
-            expect(response).to redirect_to(dashboard_path)
-          end
-        end
-
-        context 'as an admin' do
-          it 'renders account' do
-            sign_in(admin)
-            get :show, params: { id: another_user.id }
-            expect(response).to render_template(:show)
-          end
+        it "renders subscriber's account" do
+          sign_in_active_user
+          expect(AccountsPresenter).to receive(:new).with(user)
+          get :show, params: { id: another_user.id }
+          expect(response).to render_template(:show)
         end
       end
 
       context 'accessing self' do
+        let(:user) { subscriber }
+
         it 'renders account' do
-          sign_in(subscriber)
+          sign_in_active_user
+          expect(AccountsPresenter).to receive(:new).with(user)
           get :show
           expect(response).to render_template(:show)
         end

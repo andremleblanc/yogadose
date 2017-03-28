@@ -24,11 +24,11 @@
 
             <div class="inner">
               <h4>Payment Method</h4>
-              <span class="header-link"><%= link_to t('.update'), edit_subscription_path %></span>
+              <span class="header-link"><%= link_to t('.update'), subscription_path %></span>
               <div><%= @presenter.payment_method_summary %></div>
             </div>
 
-            <% if @presenter.active_subscription? %>
+            <% unless @presenter.cancelling_subscription? %>
                 <div class="inner">
                   <h4>Cancel Your Subscription</h4>
                   <span class="header-link"><%= link_to 'Cancel', subscription_path, method: :delete, data: {confirm: t('.cancel_subscription')} %></span>
@@ -36,7 +36,7 @@
             <% else %>
                 <div class="inner">
                   <h4>Reactivate Your Subscription</h4>
-                  <span class="header-link"><%= link_to 'Reactivate', new_subscription_path, method: :put %></span>
+                  <span class="header-link"><%= link_to 'Reactivate', reactivate_subscription_path, method: :post %></span>
                 </div>
             <% end %>
           </div>
@@ -44,7 +44,7 @@
           <div class="card">
             <div class="inner">
               <h4><%= t('.your_plan') %></h4>
-              <span class="header-link"><%= link_to t('.sign_up'), new_subscription_path %></span>
+              <span class="header-link"><%= link_to t('.sign_up'), subscription_path %></span>
               <div><i><%= t('.no_subscription') %></i></div>
             </div>
           </div>

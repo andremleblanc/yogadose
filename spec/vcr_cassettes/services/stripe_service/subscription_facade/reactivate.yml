@@ -1,0 +1,253 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/subscriptions/sub_AM1MUQdoF5XPC8
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.57.1
+      Authorization:
+      - Bearer sk_test_uGgeLv9tiR6pziNZhS6G2jGw
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.57.1","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Andres-AC-MBP.local 16.4.0 Darwin Kernel Version 16.4.0: Thu Dec 22 22:53:21
+        PST 2016; root:xnu-3789.41.3~3/RELEASE_X86_64 x86_64","hostname":"Andres-AC-MBP.local"}'
+      Host:
+      - api.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 04 Apr 2017 01:51:05 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1617'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_APVqTMfvbUNNP8
+      Stripe-Version:
+      - '2014-06-17'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "sub_AM1MUQdoF5XPC8",
+          "object": "subscription",
+          "application_fee_percent": null,
+          "cancel_at_period_end": true,
+          "canceled_at": 1491270644,
+          "created": 1490465337,
+          "current_period_end": 1493683199,
+          "current_period_start": 1491091199,
+          "customer": "cus_AM1M7BGR8ag60w",
+          "discount": null,
+          "ended_at": null,
+          "items": {
+            "object": "list",
+            "data": [
+              {
+                "id": "si_1A1JJt4Pf3BKBRGPoQWYa2XF",
+                "object": "subscription_item",
+                "created": 1490465337,
+                "plan": {
+                  "id": "standard",
+                  "object": "plan",
+                  "amount": 1395,
+                  "created": 1483053699,
+                  "currency": "usd",
+                  "interval": "month",
+                  "interval_count": 1,
+                  "livemode": false,
+                  "metadata": {},
+                  "name": "Standard",
+                  "statement_descriptor": null,
+                  "trial_period_days": 7,
+                  "statement_description": null
+                },
+                "quantity": 1
+              }
+            ],
+            "has_more": false,
+            "total_count": 1,
+            "url": "/v1/subscription_items?subscription=sub_AM1MUQdoF5XPC8"
+          },
+          "livemode": false,
+          "metadata": {},
+          "plan": {
+            "id": "standard",
+            "object": "plan",
+            "amount": 1395,
+            "created": 1483053699,
+            "currency": "usd",
+            "interval": "month",
+            "interval_count": 1,
+            "livemode": false,
+            "metadata": {},
+            "name": "Standard",
+            "statement_descriptor": null,
+            "trial_period_days": 7,
+            "statement_description": null
+          },
+          "quantity": 1,
+          "start": 1490465337,
+          "status": "active",
+          "tax_percent": null,
+          "trial_end": 1491091199,
+          "trial_start": 1490465337
+        }
+    http_version: 
+  recorded_at: Tue, 04 Apr 2017 01:51:05 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/subscriptions/sub_AM1MUQdoF5XPC8
+    body:
+      encoding: UTF-8
+      string: plan=standard
+    headers:
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.57.1
+      Authorization:
+      - Bearer sk_test_uGgeLv9tiR6pziNZhS6G2jGw
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.57.1","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Andres-AC-MBP.local 16.4.0 Darwin Kernel Version 16.4.0: Thu Dec 22 22:53:21
+        PST 2016; root:xnu-3789.41.3~3/RELEASE_X86_64 x86_64","hostname":"Andres-AC-MBP.local"}'
+      Content-Length:
+      - '13'
+      Host:
+      - api.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 04 Apr 2017 01:51:05 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1612'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_APVqCvpqPakysj
+      Stripe-Version:
+      - '2014-06-17'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "sub_AM1MUQdoF5XPC8",
+          "object": "subscription",
+          "application_fee_percent": null,
+          "cancel_at_period_end": false,
+          "canceled_at": null,
+          "created": 1490465337,
+          "current_period_end": 1493683199,
+          "current_period_start": 1491091199,
+          "customer": "cus_AM1M7BGR8ag60w",
+          "discount": null,
+          "ended_at": null,
+          "items": {
+            "object": "list",
+            "data": [
+              {
+                "id": "si_1A1JJt4Pf3BKBRGPoQWYa2XF",
+                "object": "subscription_item",
+                "created": 1490465337,
+                "plan": {
+                  "id": "standard",
+                  "object": "plan",
+                  "amount": 1395,
+                  "created": 1483053699,
+                  "currency": "usd",
+                  "interval": "month",
+                  "interval_count": 1,
+                  "livemode": false,
+                  "metadata": {},
+                  "name": "Standard",
+                  "statement_descriptor": null,
+                  "trial_period_days": 7,
+                  "statement_description": null
+                },
+                "quantity": 1
+              }
+            ],
+            "has_more": false,
+            "total_count": 1,
+            "url": "/v1/subscription_items?subscription=sub_AM1MUQdoF5XPC8"
+          },
+          "livemode": false,
+          "metadata": {},
+          "plan": {
+            "id": "standard",
+            "object": "plan",
+            "amount": 1395,
+            "created": 1483053699,
+            "currency": "usd",
+            "interval": "month",
+            "interval_count": 1,
+            "livemode": false,
+            "metadata": {},
+            "name": "Standard",
+            "statement_descriptor": null,
+            "trial_period_days": 7,
+            "statement_description": null
+          },
+          "quantity": 1,
+          "start": 1490465337,
+          "status": "active",
+          "tax_percent": null,
+          "trial_end": 1491091199,
+          "trial_start": 1490465337
+        }
+    http_version: 
+  recorded_at: Tue, 04 Apr 2017 01:51:05 GMT
+recorded_with: VCR 3.0.3

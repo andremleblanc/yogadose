@@ -1,42 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe SubscriptionsController, type: :controller do
-  context 'GET new' do
+  let(:user) {create(:user)}
+
+  context 'GET edit' do
     context 'when unauthenticated' do
       before do
-        get :new
+        get :edit
       end
 
-      it { expect(response).to redirect_to(new_user_session_path) }
+      it {expect(response).to redirect_to(new_user_session_path)}
     end
 
     context 'when authenticated' do
-      context 'and no subscription' do
-        before do
-          user = create(:user)
-          sign_in(user)
-          get :new
-        end
-
-        it { expect(response).to render_template(:new) }
-        it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
+      before do
+        sign_in(user)
+        get :edit
       end
 
-      context 'and subscription' do
-        before do
-          subscriber = create(:subscriber)
-          sign_in(subscriber)
-          get :new
-        end
-
-        it { expect(response).to render_template(:edit) }
-        it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
-      end
+      it {expect(response).to render_template(:edit)}
+      it {expect(assigns(:presenter)).to be_a(SubscriptionsPresenter)}
     end
   end
 
   context 'POST create' do
-    let(:user) { create(:user) }
+    let(:user) {create(:user)}
 
     context 'when unauthenticated' do
       it 'redirects to login' do
@@ -46,60 +34,35 @@ RSpec.describe SubscriptionsController, type: :controller do
     end
 
     context 'when authenticated' do
-      context 'and no subscription' do
+      let(:params) {{stripeToken: Stripe::Token.create(card: {number: '4242424242424242', exp_month: 10, exp_year: 2017, cvc: 222}).id}}
+
+      context 'and user is inactive' do
         before do
           sign_in(user)
         end
 
-        let(:params) {{ subscription: subscription_params, stripeToken: Faker::Lorem.characters(20) }}
-        let(:subscription_params) {{ }}
-
-        context 'and subscription is valid' do
+        context 'and stripe_token is present' do
           it 'create the subscription' do
-            expect(user.subscription).to be nil
-            expect(subject).to receive(:activate_subscription)
-            expect { post :create, params: params }.to change { Subscription.count }.by(1)
-            user.reload
-            expect(user.subscription).to be_a Subscription
+            VCR.use_cassette('controllers/subscriptions/create') do
+              expect(user.active?).to be false
+              post :create, params: params
+              user.reload
+              expect(user.active?).to be true
+            end
           end
 
-          it 'redirects to account path' do
-            expect(subject).to receive(:activate_subscription)
-            post :create, params: params
-            expect(response).to redirect_to(dashboard_path)
-          end
-
-          it 'has the correct flash message' do
-            expect(subject).to receive(:activate_subscription)
-            post :create, params: params
-            expect(flash[:success]).to match I18n.t('flash.subscription_success')
-          end
-
-          # it 'schedules a job' do
-          #   expect { post :create, params: params }.to change{ SubscriptionWorker.jobs.size }.by(1)
-          # end
-        end
-
-        context 'and subscription is not valid' do
-          before do
-            expect(subject).to receive(:create_subscription).and_return(false)
-          end
-
-          it 'does not create the subscription' do
-            expect(user.subscription).to be nil
-            expect { post :create, params: params }.not_to change { Subscription.count }
-            user.reload
-            expect(user.subscription).to be nil
-          end
-
-          it 'redirects to new' do
-            post :create, params: params
-            expect(response).to redirect_to(new_subscription_path)
+          it 'redirects to dashboard' do
+            VCR.use_cassette('controllers/subscriptions/create') do
+              post :create, params: params
+              expect(response).to redirect_to(dashboard_path)
+            end
           end
 
           it 'has the correct flash message' do
-            post :create, params: params
-            expect(flash[:error]).to match I18n.t('flash.subscription_error')
+            VCR.use_cassette('controllers/subscriptions/create') do
+              post :create, params: params
+              expect(flash[:success]).to match I18n.t('flash.subscription_success')
+            end
           end
         end
       end
@@ -109,85 +72,31 @@ RSpec.describe SubscriptionsController, type: :controller do
           sign_in(user)
         end
 
-        let(:user) { create(:subscriber) }
-        let(:params) {{ subscription: subscription_params }}
-        let(:subscription_params) {{ stripeToken: Faker::Lorem.characters(20) }}
+        let(:user) {create(:user, stripe_id: 'cus_APubYfmbfmE06U')}
 
         it 'does not allow a second subscription' do
-          post :create, params: params
-          expect(response).to redirect_to(edit_subscription_path)
+          VCR.use_cassette('controllers/subscriptions/create_existing') do
+            post :create, params: params
+            expect(response).to redirect_to(subscription_path)
+          end
         end
 
         it 'has the correct flash message' do
-          post :create, params: params
-          expect(flash[:notice]).to match I18n.t('flash.subscription_already_exists')
+          VCR.use_cassette('controllers/subscriptions/create_existing') do
+            post :create, params: params
+            expect(flash[:notice]).to match I18n.t('flash.subscription_already_exists')
+          end
         end
-      end
-    end
-  end
-
-  context 'GET edit' do
-    let(:subscription) { create(:subscription) }
-
-    context 'with id' do
-      context 'when unauthenticated' do
-        it 'redirects to login' do
-          get :edit, params: { id: subscription.id }
-          expect(response).to redirect_to(new_user_session_path)
-        end
-      end
-
-      context 'when authenticated' do
-        let(:user) { create(:subscriber) }
-
-        before do
-          sign_in(user)
-          get :edit, params: { id: subscription.id }
-        end
-
-        context 'and unauthorized' do
-          let(:different_user) { create(:subscriber) }
-          let(:subscription) { different_user.subscription }
-          it { expect(response).to redirect_to(dashboard_path) }
-        end
-
-        context 'and authorized' do
-          let(:subscription) { user.subscription }
-          it { expect(response).to render_template(:edit) }
-          it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
-        end
-      end
-    end
-
-    context 'with no id' do
-      context 'when unauthenticated' do
-        it 'redirects to login' do
-          get :edit
-          expect(response).to redirect_to(new_user_session_path)
-        end
-      end
-
-      context 'when authenticated' do
-        let(:user) { create(:subscriber) }
-        let(:subscription) { user.subscription }
-
-        before do
-          sign_in(user)
-          get :edit
-        end
-
-        it { expect(response).to render_template(:edit) }
-        it { expect(assigns(:presenter)).to be_a(SubscriptionsPresenter) }
       end
     end
   end
 
   context 'PATCH update' do
-    let(:user) { create(:user) }
+    let(:user) {create(:user)}
 
     context 'when unauthenticated' do
       it 'redirects to login' do
-        patch :update, params: { id: 1 }
+        patch :update, params: {id: 1}
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -197,67 +106,93 @@ RSpec.describe SubscriptionsController, type: :controller do
         sign_in(user)
       end
 
-      let(:user) { create(:subscriber) }
+      let(:user) {create(:user, stripe_id: 'cus_APAdfK1YEMXFiX')}
 
-      context 'without stripe token' do
-        context 'when activate returns true' do
-          before do
-            expect(subject).to receive(:reactivate_subscription).and_return(true)
-          end
+      context 'with stripe token' do
+        let(:params) {{stripeToken: Stripe::Token.create(card: {number: '4242424242424242', exp_month: 10, exp_year: 2017, cvc: 222}).id}}
 
-          it 'redirects to edit subscription path' do
-            patch :update, params: { id: 1 }
-            expect(response).to redirect_to(account_path)
-            expect(flash[:success]).to match I18n.t('flash.subscription_reactivated')
+        it 'updates the source on the subscription' do
+          VCR.use_cassette('controllers/subscriptions/update') do
+            original = user.source
+            patch :update, params: params
+            user.reload
+            expect(user.source).not_to eq (original)
+            expect(flash[:success]).to match I18n.t('flash.subscription_updated')
           end
         end
+      end
+    end
+  end
 
-        context 'when activate returns false' do
-          before do
-            expect(subject).to receive(:reactivate_subscription).and_return(false)
-          end
+  context 'POST reactivate' do
+    let(:user) {create(:user)}
 
-          it 'redirects to edit subscription path' do
-            patch :update, params: { id: 1 }
-            expect(response).to redirect_to(edit_subscription_path)
-            expect(flash[:error]).to match I18n.t('flash.subscription_not_updated')
+    context 'when unauthenticated' do
+      it 'redirects to login' do
+        post :reactivate
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'when authenticated' do
+      before do
+        sign_in(user)
+      end
+
+      context 'and cancelling' do
+        let(:user) {create(:user, stripe_id: 'cus_AV8QGNjX4RE1j0')}
+
+        it 'reactivates the subscription' do
+          VCR.use_cassette('controllers/subscriptions/reactivate_success') do
+            expect(user.cancelling?).to be true
+            post :reactivate
+            user.reload
+            expect(user.active?).to be true
+            expect(flash[:success]).to match I18n.t('subscriptions.reactivate.success')
           end
         end
       end
 
-      context 'with stripe token' do
-        let(:token) { Faker::Lorem.characters(20) }
+      context 'and active' do
+        let(:user) {create(:user, stripe_id: 'cus_APuk2Rg1xJKvU8')}
 
-        # it 'calls SubscriptionWorker' do
-        #   expect(SubscriptionWorker).to receive(:perform_async).with(user.id, token)
-        #   patch :update, params: { id: user.subscription.id, stripeToken: token }
-        #   expect(response).to redirect_to(account_path)
-        #   expect(flash[:success]).to match I18n.t('flash.subscription_updated')
-        # end
+        it 'renders error message' do
+          VCR.use_cassette('controllers/subscriptions/reactivate_failure') do
+            expect(user.active?).to be true
+            post :reactivate
+            expect(flash[:error]).to match I18n.t('subscriptions.reactivate.already_active')
+          end
+        end
       end
     end
   end
 
   context 'DELETE destroy' do
-    let(:subscriber) { create(:subscriber) }
-    let(:subscription) { subscriber.subscription }
-    let(:result) { delete :destroy, params: { id: subscription.id } }
+    let(:user) {create(:user)}
 
-    context 'unauthenticated' do
+    context 'when unauthenticated' do
       it 'redirects to login' do
-        result
+        delete :destroy
         expect(response).to redirect_to(new_user_session_path)
       end
     end
 
-    context 'authenticated' do
+    context 'when authenticated' do
       before do
-        sign_in subscriber
+        sign_in(user)
       end
 
-      it 'cancels a Stripe subscription' do
-        expect(subject).to receive(:cancel_subscription)
-        result
+      let(:user) {create(:user, stripe_id: 'cus_AV8QGNjX4RE1j0')}
+
+      context 'with stripe token' do
+        it 'updates the source on the subscription' do
+          VCR.use_cassette('controllers/subscriptions/destroy') do
+            expect(user.active?).to be true
+            delete :destroy
+            user.reload
+            expect(user.cancelling?).to be true
+          end
+        end
       end
     end
   end

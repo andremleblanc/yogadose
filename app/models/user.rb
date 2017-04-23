@@ -1,49 +1,43 @@
 class User < ApplicationRecord
-  has_one :subscription
-
   before_validation :default_values
-  validates :admin, inclusion: { in: [true, false] }
+  validates :admin, inclusion: {in: [true, false]}
   validates :name, presence: true
   devise :database_authenticatable, :lockable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          omniauth_providers: [:facebook]
 
+  delegate :active?, :cancelling?, :cancel_subscription, :inactive?, :reactivate, :source,
+           :subscription, to: :customer_facade
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
+      user.password = Devise.friendly_token[0, 20]
       user.name = auth.info.name
-      # user.image = auth.info.image
     end
   end
 
-  def active?
-    false
+  def create_subscription(stripe_token)
+    customer_facade.update(source: stripe_token)
+    customer_facade.create_subscription
+  end
+  
+  def update_subscription(params)
+    customer_facade.update(source: params[:stripe_token]) if params[:stripe_token]
   end
 
-  def default_source
-    stripe_customer ? stripe_customer.sources.data.last : nil
+  def customer_facade
+    @customer_facade ||= StripeService::CustomerFacade.find_or_create(self)
   end
 
-  def stripe_customer
-    @stripe_customer ||= stripe_id ? Stripe::Customer.retrieve(stripe_id) : link_to_stripe
-  end
-
-  def update_stripe(args)
-    args.each { |k,v| stripe_customer.send("#{k}=", v) }
-    stripe_customer.save
+  def reload
+    super
+    @customer_facade = nil
   end
 
   private
 
   def default_values
-    self.admin = false if self.admin.nil?
-  end
-
-  def link_to_stripe
-    stripe_customer = Stripe::Customer.create({ email: email })
-    self.stripe_id = stripe_customer.id
-    self.save!
-    stripe_customer
+    self.admin = false if admin.nil?
   end
 end

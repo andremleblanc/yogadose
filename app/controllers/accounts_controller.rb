@@ -1,7 +1,5 @@
 class AccountsController < ApplicationController
   def show
-    user = User.find_by(id: params[:id]) || current_user
-    authorize user
-    @presenter = AccountsPresenter.new(user)
+    @presenter = AccountsPresenter.new(current_user)
   end
 end

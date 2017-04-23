@@ -1,20 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe 'associations' do
-    it 'has one subscription' do
-      subscriber = create(:user)
-      expect(subscriber.create_subscription(attributes_for :subscription)).to be_a Subscription
-    end
-
-    xit 'destroying a user keep subscription' do
-      pending
-      #subscriber
-      #subscriber.destory
-      #user.create(subscriber.email).subscription == subscriber.subscription
-    end
-  end
-
   describe 'default values' do
     context 'admin' do
       context 'when nil' do
@@ -53,88 +39,49 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#active?' do
-    xit 'is true' do
-      user = create(:user)
-      expect(user.active?).to be true
-    end
-  end
-
   describe 'instance methods' do
     let(:user) { create(:user) }
-    let(:stripe_customer) { double('Stripe::Customer') }
 
-    describe '#default_source' do
-      context 'when user defined in Stripe' do
-        before do
-          VCR.use_cassette('users/link_to_stripe') do
-            user.link_to_stripe
-          end
+    describe '#active?' do
+      let(:subject) { user }
+      let(:result) { subject.active? }
 
-          VCR.use_cassette('users/get_token') do
-            token = Stripe::Token.create(
-                :card => {
-                    :number => "4242424242424242",
-                    :exp_month => 2,
-                    :exp_year => 2018,
-                    :cvc => "314"
-                },
-            )
-          end
-
-          user.update_stripe(source: token)
-        end
-
-        xit 'returns the default source' do
-          VCR.use_cassette('users/default_source') do
-            expect(user.default_source).to be
-          end
-        end
-      end
-
-      context 'when user not defined in Stripe' do
-        xit 'returns nil' do
-          expect(user.default_source).to be_nil
-        end
+      it 'delegates to subscription' do
+        customer_facade = double('StripeService::CustomerFacade')
+        expect(subject).to receive(:customer_facade).and_return(customer_facade)
+        expect(customer_facade).to receive(:active?)
+        result
       end
     end
 
-    describe '#payment_method' do
+    describe '#create_subscription' do
+      let(:subject) { user }
+      let(:result) { subject.create_subscription(token) }
+      let(:customer_facade) { double('StripeService::CustomerFacade') }
+      let(:token) { 'tok_1234' }
+
+      it 'creates subscription' do
+        expect(subject).to receive(:customer_facade).twice.and_return(customer_facade)
+        expect(customer_facade).to receive(:update).with(source: token)
+        expect(customer_facade).to receive(:create_subscription)
+        result
+      end
+    end
+
+    describe '#inactive?' do
+      let(:subject) { user }
+      let(:result) { subject.inactive? }
+
+      it 'delegates to subscription' do
+        customer_facade = double('StripeService::CustomerFacade')
+        expect(subject).to receive(:customer_facade).and_return(customer_facade)
+        expect(customer_facade).to receive(:inactive?)
+        result
+      end
+    end
+
+    describe '#update_subscription' do
       xit 'does something'
-    end
-
-    describe '#update_stripe' do
-      subject { user.update_stripe(email: 'mydumbtest@yogadose.xyz') }
-      let(:customer_id) { 'cus_1234' }
-
-      context 'when user defined in Stripe' do
-        let(:user) { create(:user, stripe_id: customer_id) }
-
-        it 'updates Stripe::Customer' do
-          expect(Stripe::Customer).to receive(:retrieve).with(customer_id).and_return(stripe_customer)
-          expect(stripe_customer).to receive(:email=)
-          expect(stripe_customer).to receive(:save)
-
-          expect(user.stripe_id).to eq customer_id
-          subject
-          expect(user.stripe_id).to eq customer_id
-        end
-      end
-
-      context 'when user not defined in Stripe' do
-        let(:user) { create(:user, stripe_id: nil) }
-
-        it 'creates Stripe::Customer and updates' do
-          expect(Stripe::Customer).to receive(:create).with(email: user.email).and_return(stripe_customer)
-          expect(stripe_customer).to receive(:id).and_return(customer_id)
-          expect(stripe_customer).to receive(:email=)
-          expect(stripe_customer).to receive(:save)
-
-          expect(user.stripe_id).to be_nil
-          subject
-          expect(user.stripe_id).to eq customer_id
-        end
-      end
     end
   end
 end

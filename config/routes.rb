@@ -7,16 +7,16 @@ Rails.application.routes.draw do
   resource :account, only: [ :show ]
   resources :accounts, only: [ :show ]
 
-  resources :routines
-  resource :subscription, only: %i(destroy edit)
-  resources :subscriptions, only: %i(new create update)
+  get '/subscription', to: 'subscriptions#edit'
+  post '/subscription', to: 'subscriptions#reactivate', as: 'reactivate_subscription'
+  post '/subscriptions', to: 'subscriptions#create'
+  patch '/subscription', to: 'subscriptions#update', as: 'update_subscription'
+  delete '/subscription', to: 'subscriptions#destroy', as: 'delete_subscription'
 
   resources :users, only: [ :index, :edit ]
-  resource :user, only: []
   get 'change_password', to: 'users#change_password', as: :change_password
   put 'update_password', to: 'users#update_password', as: :update_password
 
-  #TODO: Convert to resource
   get 'dashboard', to: 'dashboard#show', as: :dashboard
 
   # Authenticated Root
